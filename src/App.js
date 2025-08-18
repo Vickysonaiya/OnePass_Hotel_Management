@@ -4,9 +4,16 @@ import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import "./App.css";
+import CreateGuestPhoneEntry from "./pages/CreateGuestPhoneEntry";
+import CreateReservationEntry from "./pages/CreateReservationEntry";
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Login = lazy(() => import("./pages/Login"));
+const AadhaarVerificationStatus = lazy(() => import("./pages/AadhaarVerificationStatus"));
+const FaceCapture = lazy(() => import("./pages/FaceCapture"));
+// const DependentLinking = lazy(() => import("./pages/DependentLinking"));
+const VerificationSummary = lazy(() => import("./pages/VerificationSummary"));
+const FinalSummary = lazy(() => import("./pages/FinalSummary"));
 
 const MainLayout = () => {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -31,6 +38,19 @@ const MainLayout = () => {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
+            <Route
+              path="/reservation-entry"
+              element={<CreateReservationEntry />}
+            />
+            <Route
+              path="/guest-phone-entry"
+              element={<CreateGuestPhoneEntry />}
+            />
+            <Route path="/aadhaar-verification" element={<AadhaarVerificationStatus />} />
+            <Route path="/face-capture" element={<FaceCapture />} />
+            {/* <Route path="/dependent-linking" element={<DependentLinking />} /> */}
+            <Route path="/verification-summary" element={<VerificationSummary />} />
+            <Route path="/final-summary" element={<FinalSummary />} />
           </Routes>
         </Suspense>
       </div>

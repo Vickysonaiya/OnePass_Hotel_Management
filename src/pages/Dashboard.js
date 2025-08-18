@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useRef } from "react";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -23,56 +23,54 @@ ChartJS.register(
 );
 
 const kpis = [
-  { title: "Total Visitors Today", value: 124, color: "green", icon: "👥" },
-  { title: "Current Visitors Inside", value: 35, color: "blue", icon: "🏢" },
+  { title: "Total Reservations Today", value: 42, color: "green", icon: "👥" },
+  { title: "Total Check-ins", value: 26, color: "blue", icon: "🏢" },
   { title: "Overstay Alerts", value: 2, color: "orange", icon: "⏳" },
   { title: "Escalated Incidents", value: 1, color: "red", icon: "🚨" },
-  { title: "Total Active Guards", value: 8, color: "green", icon: "🛡️" },
-  { title: "Total Check-out", value: 25, color: "red", icon: "🚪" },
 ];
 
 export default function Dashboard() {
-  const [incidents, setIncidents] = useState([
-    { time: "10:15 AM", message: "Visitor in restricted zone", type: "alert" },
-    { time: "09:45 AM", message: "Overstay alert triggered", type: "warning" },
-  ]);
+  // const [incidents, setIncidents] = useState([
+  //   { time: "10:15 AM", message: "Visitor in restricted zone", type: "alert" },
+  //   { time: "09:45 AM", message: "Overstay alert triggered", type: "warning" },
+  // ]);
 
-  const [pendingRequests, setPendingRequests] = useState([
-    { visitorName: "John Doe", purpose: "Client Meeting", time: "10:45 AM" },
-    {
-      visitorName: "Jane Smith",
-      purpose: "Maintenance Work",
-      time: "11:00 AM",
-    },
-    { visitorName: "Ali Khan", purpose: "Delivery", time: "11:15 AM" },
-  ]);
+  // const [pendingRequests, setPendingRequests] = useState([
+  //   { visitorName: "John Doe", purpose: "Client Meeting", time: "10:45 AM" },
+  //   {
+  //     visitorName: "Jane Smith",
+  //     purpose: "Maintenance Work",
+  //     time: "11:00 AM",
+  //   },
+  //   { visitorName: "Ali Khan", purpose: "Delivery", time: "11:15 AM" },
+  // ]);
 
-  const handleApprove = (index) => {
-    const approved = pendingRequests[index];
-    alert(`Approved: ${approved.visitorName}`);
-    setPendingRequests((prev) => prev.filter((_, i) => i !== index));
-  };
+  // const handleApprove = (index) => {
+  //   const approved = pendingRequests[index];
+  //   alert(`Approved: ${approved.visitorName}`);
+  //   setPendingRequests((prev) => prev.filter((_, i) => i !== index));
+  // };
 
-  const handleReject = (index) => {
-    const rejected = pendingRequests[index];
-    alert(`Rejected: ${rejected.visitorName}`);
-    setPendingRequests((prev) => prev.filter((_, i) => i !== index));
-  };
+  // const handleReject = (index) => {
+  //   const rejected = pendingRequests[index];
+  //   alert(`Rejected: ${rejected.visitorName}`);
+  //   setPendingRequests((prev) => prev.filter((_, i) => i !== index));
+  // };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const newIncident = {
-        time: new Date().toLocaleTimeString(),
-        message:
-          Math.random() > 0.5
-            ? "Random security check triggered"
-            : "Suspicious activity detected",
-        type: Math.random() > 0.5 ? "alert" : "warning",
-      };
-      setIncidents((prev) => [newIncident, ...prev].slice(0, 5));
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     const newIncident = {
+  //       time: new Date().toLocaleTimeString(),
+  //       message:
+  //         Math.random() > 0.5
+  //           ? "Random security check triggered"
+  //           : "Suspicious activity detected",
+  //       type: Math.random() > 0.5 ? "alert" : "warning",
+  //     };
+  //     setIncidents((prev) => [newIncident, ...prev].slice(0, 5));
+  //   }, 5000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const chartRef = useRef(null);
 
@@ -92,7 +90,7 @@ export default function Dashboard() {
     datasets: [
       {
         label: "Visitors",
-        data: [9, 15, 40, 35, 20, 25, 41, 37, 30, 5],
+        data: [2, 10, 5, 15, 4, 3, 8, 4, 6, 9],
         backgroundColor: function (context) {
           const chart = context.chart;
           const { ctx, chartArea } = chart;
@@ -124,7 +122,7 @@ export default function Dashboard() {
       },
       title: {
         display: true,
-        text: "Hourly Visitors (9 AM - 6 PM)",
+        text: "Hourly Reservations",
         font: { size: 20, weight: "bold" },
         color: "#0d47a1",
       },
@@ -172,7 +170,7 @@ export default function Dashboard() {
         beginAtZero: true,
         title: {
           display: true,
-          text: "Number of Visitors",
+          text: "Number of Reservations",
           font: { size: 14, weight: "bold" },
         },
       },
@@ -202,7 +200,7 @@ export default function Dashboard() {
           <Bar ref={chartRef} data={barChartData} options={barChartOptions} />
         </div>
 
-        <div className="widget-card">
+        {/* <div className="widget-card">
           <h5>Live Incident Feed</h5>
           <div className="incident-feed">
             {incidents.map((incident, idx) => (
@@ -211,9 +209,9 @@ export default function Dashboard() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
 
-        <div className="widget-card">
+        {/* <div className="widget-card">
           <h5>Pending Approvals</h5>
           {pendingRequests.length === 0 ? (
             <p className="no-requests">No pending approvals</p>
@@ -244,7 +242,7 @@ export default function Dashboard() {
               ))}
             </ul>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   );
