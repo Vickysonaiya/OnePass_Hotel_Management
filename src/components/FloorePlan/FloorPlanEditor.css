@@ -1,0 +1,470 @@
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  background-color: #dde5ea;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  color: #333;
+}
+
+.tab.active {
+  background-color: #ffffff;
+  border: 2px solid #dde5ea;
+  font-weight: bold;
+}
+
+.editor {
+  display: flex;
+  border: 1px solid #ccc;
+  height: 600px;
+}
+
+.floorplan-box {
+  flex: 1;
+  background-color: #f2f2f2;
+  border-right: 1px solid #ccc;
+}
+
+.side-panel {
+  width: 250px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: #fff;
+}
+
+.delete-btn {
+  background: #f8f8f8;
+  color: #666;
+  border: 1px solid #ccc;
+  padding: 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.generate-btn {
+  background: #e7fff4;
+  color: #00b38f;
+  border: 1px solid #00b38f;
+  padding: 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.draw-btn {
+  background: #eaffff;
+  color: #00a0b3;
+  border: 1px solid #00a0b3;
+  padding: 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.placeholder-tab-content {
+  padding: 40px;
+  text-align: center;
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  height: 600px;
+}
+
+.generate-btn.selected,
+.draw-btn.selected {
+  border: 2px solid #00b38f;
+  background-color: #d9fff0;
+}
+
+.draw-btn.selected {
+  border: 2px solid #00a0b3;
+  background-color: #d6f9ff;
+}
+.delete-btn.selected {
+  border: 2px solid #ff6666;
+  background-color: #ffecec;
+}
+.container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  background-color: #dde5ea;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  color: #333;
+}
+
+.tab.active {
+  background-color: #ffffff;
+  border: 2px solid #dde5ea;
+  font-weight: bold;
+}
+
+.editor {
+  display: flex;
+  border: 1px solid #ccc;
+  height: 600px;
+}
+
+.floorplan-box {
+  flex: 1;
+  background-color: #f2f2f2;
+  border-right: 1px solid #ccc;
+}
+
+.side-panel {
+  width: 250px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: #fff;
+}
+
+.delete-btn,
+.generate-btn,
+.draw-btn {
+  border: 1px solid #ccc;
+  padding: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  background: #f8f8f8;
+  color: #333;
+}
+
+.delete-btn.selected {
+  border: 2px solid #ff6666;
+  background-color: #ffecec;
+}
+
+.generate-btn.selected {
+  border: 2px solid #00b38f;
+  background-color: #d9fff0;
+}
+
+.draw-btn.selected {
+  border: 2px solid #00a0b3;
+  background-color: #d6f9ff;
+}
+
+.placeholder-tab-content {
+  padding: 40px;
+  text-align: center;
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  height: 600px;
+}
+
+.floorplan-box {
+  flex: 1;
+  background-color: #f2f2f2;
+  border-right: 1px solid #ccc;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.floorplan-img {
+  max-width: 130%;
+  max-height: 140%;
+  object-fit: contain;
+  display: block;
+  transform: rotate(-90deg);
+}
+
+.floorplan-box {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.floorplan-canvas {
+  border: 1px solid #ccc;
+  width: 100%;
+  height: auto;
+}
+
+.hidden-img {
+  display: none;
+}
+
+.floorplan-box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.floorplan-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.generated-room {
+  position: absolute;
+}
+
+.floorplan-box {
+  position: relative;
+  width: 800px; 
+  height: auto;
+}
+
+.floorplan-img {
+  width: 100%;
+  display: block;
+}
+
+.generated-room {
+  pointer-events: none;
+}
+
+.draw-point {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.polygon-overlay {
+  pointer-events: none;
+  z-index: 5;
+}
+
+.polygon-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.floorplan-box {
+  position: relative;
+}
+
+.polygon-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.polygon-canvas g,
+.polygon-canvas polygon,
+.polygon-canvas circle,
+.polygon-canvas foreignObject {
+  pointer-events: all;
+}
+
+.polygon-name-popup {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: white;
+  border: 1px solid #aaa;
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
+.polygon-name-popup input {
+  padding: 4px 8px;
+  margin-right: 6px;
+  width: 140px;
+}
+
+.overview {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.overview-box {
+  position: relative;
+  flex: 1;
+  border: 2px solid #ddd;
+  margin: 10px;
+  background: #f5f5f5;
+}
+
+.overview-panel {
+  width: 260px;
+  padding: 12px;
+  background: #fff;
+  border-left: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.panel-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.panel-section h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.panel-btn {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 6px 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.panel-btn.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.panel-section.disabled {
+  opacity: 0.4;
+}
+
+.beacon {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  background-color: red;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 28px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+}
+.beacon {
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.editor {
+  display: flex;
+  gap: 20px;
+}
+
+.floorplan-box {
+  position: relative;
+  width: 800px;
+  height: 600px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+}
+
+.floorplan-img {
+  width: 100%;
+  height: 140%;
+  object-fit: contain;
+}
+
+.side-panel {
+  width: 220px;
+  padding: 10px;
+  background-color: #f5f5f5;
+}
+
+.panel-section {
+  margin-bottom: 20px;
+}
+
+.panel-btn {
+  width: 70%;
+  height: 30px;
+  padding: 4px;
+  margin-top: 11px;
+  background-color: #ddd;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.panel-section.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.panel-btn.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.beacon-toggle-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.beacon-label {
+  font-size: 12px;
+  color: #888;
+  font-weight: 600;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.custom-toggle-button {
+  display: flex;
+  margin-top: 3px;
+  width: 60px;
+  height: 30px;
+  border: 1px solid red;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.toggle-left,
+.toggle-right {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+}
+
+.toggle-left {
+  background-color: red;
+  color: white;
+}
+
+.toggle-right {
+  background-color: white;
+  color: red;
+}

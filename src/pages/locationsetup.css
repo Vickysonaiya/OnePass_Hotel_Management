@@ -1,0 +1,361 @@
+.main-app {
+  min-height: 100vh;
+  background-color: #f3f4f6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.app-header {
+  width: 100%;
+  padding: 1.5rem;
+  text-align: center;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
+
+.app-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.main-container {
+  background-color: #f9fafb;
+  min-height: 100vh;
+  width: 100%;
+  padding: 1rem;
+}
+
+.header {
+  padding: 1rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  border-radius: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+}
+
+.button .icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.5rem;
+}
+
+.upload-btn {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.upload-btn:hover {
+  background-color: #2563eb;
+}
+
+.button:not(.upload-btn, .finish-btn, .add-beacon-btn, .delete-btn) {
+  background-color: #eff6ff;
+  color: #1e40af;
+}
+
+.button:not(.upload-btn, .finish-btn, .add-beacon-btn, .delete-btn):hover {
+  background-color: #dbeafe;
+}
+
+.button.active {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.finish-btn {
+  background-color: #10b981;
+  color: #ffffff;
+}
+
+.finish-btn:hover {
+  background-color: #059669;
+}
+
+.add-beacon-btn {
+  background-color: #10b981;
+  color: #ffffff;
+}
+
+.add-beacon-btn:hover {
+  background-color: #059669;
+}
+
+.delete-btn {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+.delete-btn:hover {
+  background-color: #dc2626;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hidden-input {
+  display: none;
+}
+
+.input-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.room-name-input {
+  font-size: 1.125rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 2px solid #3b82f6;
+  outline: none;
+  transition: all 0.2s;
+  width: 16rem;
+  text-align: center;
+}
+
+.room-name-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+.canvas-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.canvas {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 2px solid #e5e7eb;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: block;
+}
+
+.room {
+  transition: all 0.2s;
+  stroke-width: 2px;
+  cursor: grab;
+  fill: rgba(59, 130, 246, 0.1);
+  stroke: #3b82f6;
+}
+
+.room.selected {
+  fill: rgba(59, 130, 246, 0.25);
+  stroke: #2563eb;
+}
+
+.room-label {
+  font-size: 1.125rem;
+  font-weight: 600;
+  pointer-events: none;
+  fill: #1e40af;
+  user-select: none;
+}
+
+.beacon-group {
+  cursor: grab;
+}
+
+.beacon-circle {
+  fill: #ef4444;
+  stroke: #ffffff;
+  stroke-width: 2px;
+}
+
+.beacon-icon {
+  width: 2rem;
+  height: 2rem;
+  color: #ffffff;
+}
+
+.beacon-label {
+  font-size: 0.875rem;
+  fill: #4b5563;
+  font-weight: 500;
+  user-select: none;
+}
+
+.point-handle {
+  fill: #ffffff;
+  stroke: #2563eb;
+  stroke-width: 2px;
+  cursor: pointer;
+}
+
+.drawing-polyline {
+  fill: transparent;
+  stroke: #2563eb;
+  stroke-width: 2px;
+  opacity: 0.75;
+}
+
+.drawing-point {
+  fill: #2563eb;
+}
+
+.beacon-popup {
+  position: absolute;
+  z-index: 20;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+  border-radius: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 2px solid #3b82f6;
+  color: #1f2937;
+  min-width: 18.75rem;
+}
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #bfdbfe;
+}
+
+.popup-icon-container {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background-color: #ef4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+}
+
+.popup-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #ffffff;
+}
+
+.popup-title {
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: #1e40af;
+}
+
+.popup-section {
+  margin-bottom: 1rem;
+}
+
+.popup-label {
+  font-weight: 500;
+  color: #1e40af;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.popup-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #93c5fd;
+  outline: none;
+  background-color: #eff6ff;
+  box-shadow: 0 1px 2px rgba(59, 130, 246, 0.07);
+}
+
+.popup-input:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+.popup-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.popup-info {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #374151;
+}
+
+.battery-level {
+  color: #22c55e;
+  font-weight: 700;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.popup-button {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.popup-button.delete {
+  background-color: #ef4444;
+}
+
+.popup-button.delete:hover {
+  background-color: #dc2626;
+}
+
+.popup-button.close {
+  background-color: #3b82f6;
+}
+
+.popup-button.close:hover {
+  background-color: #2563eb;
+}
+
+.button-icon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.25rem;
+}
