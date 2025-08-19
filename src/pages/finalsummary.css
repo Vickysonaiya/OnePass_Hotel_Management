@@ -109,3 +109,37 @@ tr:hover {
 .secondary-button:hover {
   background-color: #5a6268;
 }
+
+.blinking-circle {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+}
+
+.yellow {
+  background: #FFD600;
+  animation: blink 1s infinite;
+}
+
+.green {
+  background: #4CAF50;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.resend-link {
+  color: #007bff;
+  cursor: pointer;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  padding: 0;
+}

@@ -119,3 +119,26 @@
 .fallback-button:hover {
   background-color: #d4d4d4;
 }
+
+.webcam-container {
+  position: relative;
+  display: inline-block;
+}
+
+.webcam-feed {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.face-guide-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 300px;
+  border: 5px solid limegreen;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none; /* so clicks pass through */
+}
+

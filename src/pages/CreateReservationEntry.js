@@ -7,7 +7,6 @@ import "./createreservationentry.css"; // We'll create this CSS file
 const ReservationEntry = () => {
   const [reservationNumber, setReservationNumber] = useState("");
   const [adults, setAdults] = useState("");
-  const [dependents, setDependents] = useState(0);
   const navigate = useNavigate();
 
   const handleStartVerification = (e) => {
@@ -18,19 +17,19 @@ const ReservationEntry = () => {
       return;
     }
 
-    const totalGuests = parseInt(adults, 10) + parseInt(dependents, 10);
+    const totalGuests = parseInt(adults, 10)
     // Store totalGuests in localStorage
     localStorage.setItem('totalGuests', totalGuests);
     console.log(`Total expected guests: ${totalGuests}`);
     console.log(`Verification session initiated for reservation: ${reservationNumber}`);
     
     navigate("/guest-phone-entry", { 
-      state: { 
-        reservationNumber, 
-        adults: parseInt(adults, 10),
-        dependents: parseInt(dependents, 10),
-        totalGuests
-      }
+  state: { 
+    reservationNumber, 
+    adults: parseInt(adults, 10),
+    totalGuests,
+    currentGuest: 1   // start from first guest
+  }
     });
   };
 
@@ -55,7 +54,7 @@ const ReservationEntry = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="adults">Number of Adults *</label>
+            <label htmlFor="adults">Number of Guests *</label>
             <input
               type="number"
               id="adults"
@@ -65,22 +64,12 @@ const ReservationEntry = () => {
               required
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="dependents">Number of Dependents (Children/Other)</label>
-            <input
-              type="number"
-              id="dependents"
-              value={dependents}
-              onChange={(e) => setDependents(e.target.value)}
-              min="0"
-            />
-          </div>
           <div className="button-group">
             <button type="button" className="secondary-button" onClick={handleCancel}>
-              Cancel / Back to Dashboard
+              Cancel
             </button>
             <button type="submit" className="primary-button">
-              Start Verification
+              Verify Guest
             </button>
           </div>
         </form>

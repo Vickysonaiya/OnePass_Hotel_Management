@@ -1,14 +1,13 @@
 // src/pages/FaceCapture.js
-
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 import { useLocation, useNavigate } from "react-router-dom";
-import "./facecapture.css"; // Create this CSS file
+import "./facecapture.css";
 
 const videoConstraints = {
   width: 1280,
   height: 720,
-  facingMode: "user" // Use the front camera
+  facingMode: "user"
 };
 
 const FaceCapture = () => {
@@ -17,26 +16,53 @@ const FaceCapture = () => {
   const [verificationStatus, setVerificationStatus] = useState("Pending");
   const [isCapturing, setIsCapturing] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [stream, setStream] = useState(null);
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { phoneNumber } = location.state || {}; // Get phone number from previous screen
+  const { phoneNumber } = location.state || {};
 
-  // Simulate a stored face template for demonstration.
-  // In a real app, this would be fetched from your database based on the user's ID.
-  // const storedFaceTemplate = {
-  //   features: "mock_face_features_of_verified_user_12345",
-  //   isVerified: true
-  // };
+  // Start webcam on mount
+  useEffect(() => {
+    async function enableCamera() {
+      try {
+        const mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: videoConstraints
+        });
+        setStream(mediaStream);
+        console.log("Webcam started successfully");
 
-  const capture = useCallback(() => {
+        // Auto-capture first frame after a small delay (to ensure feed is live)
+        setTimeout(() => {
+          if (webcamRef.current) {
+            handleAutoCapture();
+          }
+        }, 3000);
+      } catch (err) {
+        console.error("Error accessing webcam:", err);
+      }
+    }
+    enableCamera();
+
+    // Cleanup → stop camera when leaving page
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+        console.log("Webcam stopped");
+      }
+    };
+  }, [stream, handleAutoCapture]);
+
+  const performFaceMatch = () => Math.random() > 0.2; // Simulated
+
+  const handleAutoCapture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
+    if (!imageSrc) return;
     setImgSrc(imageSrc);
     setIsCapturing(true);
     setVerificationStatus("Processing...");
     setShowConfirm(false);
 
-    // Simulate the face match process with a delay
     setTimeout(() => {
       const matchSuccess = performFaceMatch(imageSrc);
       if (matchSuccess) {
@@ -46,20 +72,7 @@ const FaceCapture = () => {
         setVerificationStatus("Failed");
       }
       setIsCapturing(false);
-    }, 2000); // 2-second delay to simulate processing
-  }, [webcamRef]);
-
-  const performFaceMatch = (liveImage) => {
-    // This is where the core logic would go.
-    // In a real application, you would:
-    // 1. Send `liveImage` to a facial recognition API.
-    // 2. The API compares it to the `storedFaceTemplate`.
-    // 3. The API returns a confidence score or a simple true/false.
-    
-    // We will simulate success based on a simple check or a random chance.
-    // Let's assume a match is successful 80% of the time.
-    const isMatch = Math.random() > 0.2;
-    return isMatch;
+    }, 3000);
   };
 
   const handleRetry = () => {
@@ -69,12 +82,10 @@ const FaceCapture = () => {
   };
 
   const handleConfirm = () => {
-    // Actions after successful verification
     console.log("Face match confirmed for:", phoneNumber);
-    // You would now update the guest's check-in status in your system.
     navigate("/verification-summary", { state: { phoneNumber } });
   };
-  
+
   const handleManualVerification = () => {
     console.log("Manual verification selected for:", phoneNumber);
     navigate("/dependent-linking", { state: { phoneNumber } });
@@ -84,7 +95,7 @@ const FaceCapture = () => {
     <div className="face-capture-container">
       <div className="face-capture-card">
         <h2 className="header">Guest Verification – Step 2: Face Capture</h2>
-        <p className="subheader">Capture and verify guest’s live photo.</p>
+        <p className="subheader">Align face in the green circle and wait for auto-capture.</p>
 
         <div className="camera-area">
           {imgSrc ? (
@@ -98,18 +109,29 @@ const FaceCapture = () => {
                 videoConstraints={videoConstraints}
                 className="webcam-feed"
               />
+              {/* ✅ Green circle overlay */}
+              <div className="face-guide-circle"></div>
             </div>
           )}
         </div>
-        
+
         <div className="status-display">
-          <p>Status: <span className={`status-${verificationStatus.toLowerCase()}`}>{verificationStatus}</span></p>
+          <p>
+            Status:{" "}
+            <span className={`status-${verificationStatus.toLowerCase()}`}>
+              {verificationStatus}
+            </span>
+          </p>
         </div>
 
         <div className="button-group">
           {imgSrc ? (
             <>
-              <button className="secondary-button" onClick={handleRetry} disabled={isCapturing}>
+              <button
+                className="secondary-button"
+                onClick={handleRetry}
+                disabled={isCapturing}
+              >
                 Retry Capture
               </button>
               {showConfirm && (
@@ -119,11 +141,11 @@ const FaceCapture = () => {
               )}
             </>
           ) : (
-            <button className="primary-button" onClick={capture}>
+            <button className="primary-button" onClick={handleAutoCapture}>
               Capture Face
             </button>
           )}
-          
+
           <button className="fallback-button" onClick={handleManualVerification}>
             Manual Verification
           </button>

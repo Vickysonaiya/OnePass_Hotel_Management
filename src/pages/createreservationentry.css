@@ -52,6 +52,7 @@
 }
 
 .primary-button {
+  width: 50%;
   flex-grow: 1;
   padding: 0.75rem;
   background-color: #007bff;
@@ -69,6 +70,7 @@
 }
 
 .secondary-button {
+  width: 50%;
   flex-grow: 1;
   padding: 0.75rem;
   background-color: #6c757d;

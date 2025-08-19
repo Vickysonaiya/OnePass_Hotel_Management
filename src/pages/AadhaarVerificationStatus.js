@@ -1,8 +1,6 @@
-// src/pages/AadhaarVerificationStatus.js
-
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "./aadhaarverificationstatus.css"; // Create a new CSS file for this component
+import "./aadhaarverificationstatus.css";
 
 const AadhaarVerificationStatus = () => {
   const [status, setStatus] = useState("Waiting for guest verification...");
@@ -10,34 +8,46 @@ const AadhaarVerificationStatus = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { phoneNumber } = location.state || {};
+  const { phoneNumber, reservationNumber, totalGuests, currentGuest, verifiedGuests = [] } =
+    location.state || {};
 
   useEffect(() => {
-    // Simulate the external Aadhaar verification flow.
-    // In a real application, this would be a WebSocket or long-polling API call
-    // to your backend, which would be listening for the guest's verification status.
-
     const simulationTimeout = setTimeout(() => {
-      // Randomly simulate success or failure for demonstration
-      const success = Math.random() > 0.3; // 70% chance of success
+      // const success = Math.random() > 0.3;
+      const success = true; // ✅ Always success for demo (change if needed)
 
       if (success) {
-        setStatus("Verification Successful! Face capture initiated.");
+        setStatus("Verification Successful! Updating summary...");
         setIsFailed(false);
-        // Navigate to the next screen after a short delay to show the success message
+
+        const newGuest = {
+          guestName: `Guest ${currentGuest}`,
+          phoneNumber,
+          aadhaarStatus: "Verified",
+          faceMatchResult: "Success",
+          timestamp: new Date().toLocaleTimeString(),
+        };
+
+        const updatedGuests = [...verifiedGuests, newGuest];
+
         setTimeout(() => {
-          navigate("/face-capture", { state: { phoneNumber } });
-        }, 1500); // 1.5-second delay
+          navigate("/final-summary", {
+            state: {
+              reservationNumber,
+              totalGuests,
+              currentGuest,
+              verifiedGuests: updatedGuests,
+            },
+          });
+        }, 1500);
       } else {
-        setStatus("Verification Failed. Please try again or proceed with manual check-in.");
+        setStatus("Verification Failed. Please retry.");
         setIsFailed(true);
       }
-    }, 5000); // Wait 5 seconds to simulate guest completing the process on their phone
+    }, 5000);
 
-    // Cleanup function to clear the timeout if the component unmounts
     return () => clearTimeout(simulationTimeout);
-  }, [navigate, phoneNumber]);
-
+  }, [navigate, phoneNumber, reservationNumber, totalGuests, currentGuest, verifiedGuests]);
   const handleRetry = () => {
     // Logic to resend the verification link or navigate back
     setStatus("Resending verification link...");

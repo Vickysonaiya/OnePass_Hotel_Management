@@ -1,60 +1,329 @@
-// src/pages/FinalSummary.js
+// import React, { useState, useEffect } from "react";
+// import { useLocation, useNavigate } from "react-router-dom";
+// import { Modal } from "react-bootstrap";
+// import "./finalsummary.css";
 
-import React from "react";
+// const SuccessModal = ({ show, handleClose, message }) => {
+//   return (
+//     <Modal show={show} onHide={handleClose} centered>
+//       <Modal.Body className="text-center py-4">
+//         <div className="success-animation">
+//           <svg
+//             className="checkmark"
+//             xmlns="http://www.w3.org/2000/svg"
+//             viewBox="0 0 52 52"
+//           >
+//             <circle
+//               className="checkmark__circle"
+//               cx="26"
+//               cy="26"
+//               r="25"
+//               fill="none"
+//             />
+//             <path
+//               className="checkmark__check"
+//               fill="none"
+//               d="M14.1 27.2l7.1 7.2 16.7-16.8"
+//             />
+//           </svg>
+//         </div>
+//         <h4 className="mt-3 text-success">Success!</h4>
+//         <p className="text-muted">{message || "Operation successful."}</p>
+//       </Modal.Body>
+//     </Modal>
+//   );
+// };
+
+// const FinalSummary = () => {
+//   const navigate = useNavigate();
+//   const location = useLocation();
+//   const [showSuccessModal, setShowSuccessModal] = useState(false);
+//   const [modalMessage, setModalMessage] = useState("");
+
+//   const {
+//     reservationNumber,
+//     totalGuests,
+//     verifiedGuests = [],
+//   } = location.state || {};
+
+//   // Simulate Aadhaar status and traffic light for each guest
+//   const [guestStatuses, setGuestStatuses] = useState(() =>
+//     verifiedGuests.map((guest) => ({
+//       ...guest,
+//       aadhaarStatus: 'Awaiting',
+//       aadhaarTrafficLight: 'yellow',
+//       faceMatchResult: guest.faceMatchResult || 'Awaiting',
+//       faceTrafficLight: 'yellow',
+//       timestamp: '19-Aug 17:15',
+//     }))
+//   );
+
+//   useEffect(() => {
+//     // For each guest, after a delay, set status to Success and trafficLight to green for both Aadhaar and Face Match
+//     guestStatuses.forEach((guest, idx) => {
+//       if (guest.aadhaarStatus === 'Awaiting') {
+//         setTimeout(() => {
+//           setGuestStatuses((prev) => {
+//             const updated = [...prev];
+//             updated[idx] = {
+//               ...updated[idx],
+//               aadhaarStatus: 'Success',
+//               aadhaarTrafficLight: 'green',
+//               faceMatchResult: 'Success',
+//               faceTrafficLight: 'green',
+//               timestamp: new Date().toLocaleString("en-GB", {
+//               day: "2-digit",
+//               month: "short",
+//               hour: "2-digit",
+//               minute: "2-digit",
+//             }),
+//             };
+//             return updated;
+//           });
+//         }, 9000 + idx * 500); // stagger for demo
+//       }
+//     });
+//     // eslint-disable-next-line
+//   }, []);
+
+//   const allGuestsVerified =
+//     guestStatuses.length === totalGuests &&
+//     guestStatuses.every((g) => g.aadhaarStatus === "Success");
+
+//   const handleConfirmCheckIn = () => {
+//     setShowSuccessModal(true);
+//     setModalMessage("Reservation check-in complete!");
+//     setTimeout(() => {
+//       setShowSuccessModal(false);
+//       navigate("/");
+//     }, 1500);
+//   };
+
+//   const handleAddNextGuest = () => {
+//     navigate("/guest-phone-entry", {
+//       state: {
+//         reservationNumber,
+//         totalGuests,
+//         currentGuest: verifiedGuests.length + 1,
+//         verifiedGuests,
+//       },
+//     });
+//   };
+
+//   return (
+//     <div className="final-summary-container">
+//       <div className="summary-card">
+//         <h2 className="header">Reservation Verification – Progress</h2>
+//         <p className="subheader">
+//           Verified {verifiedGuests.length} of {totalGuests} guests
+//         </p>
+
+//         <div className="table-container">
+//           <table>
+//             <thead>
+//               <tr>
+//                 <th>Guest Name</th>
+//                 <th>Phone</th>
+//                 <th>Aadhaar Status</th>
+//                 <th>Face Match</th>
+//                 <th>Timestamp</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {guestStatuses.map((guest, index) => (
+//                 <tr key={index}>
+//                   <td>{guest.guestName}</td>
+//                   <td>{guest.phoneNumber}</td>
+//                   <td>
+//                     <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+//                       <span style={{
+//                         display: 'inline-block',
+//                         width: 14,
+//                         height: 14,
+//                         borderRadius: '50%',
+//                         background: guest.aadhaarTrafficLight === 'green' ? '#4CAF50' : guest.aadhaarTrafficLight === 'yellow' ? '#FFD600' : '#f44336',
+//                         border: '1px solid #ccc',
+//                       }} />
+//                       {guest.aadhaarStatus}
+//                     </span>
+//                   </td>
+//                   <td>
+//                     <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+//                       <span style={{
+//                         display: 'inline-block',
+//                         width: 14,
+//                         height: 14,
+//                         borderRadius: '50%',
+//                         background: guest.faceTrafficLight === 'green' ? '#4CAF50' : guest.faceTrafficLight === 'yellow' ? '#FFD600' : '#f44336',
+//                         border: '1px solid #ccc',
+//                       }} />
+//                       {guest.faceMatchResult}
+//                     </span>
+//                   </td>
+//                   <td>{guest.timestamp}</td>
+//                 </tr>
+//               ))}
+//             </tbody>
+//           </table>
+//         </div>
+
+//         <div className="button-group">
+//           {!allGuestsVerified && (
+//             <button
+//               type="button"
+//               className="secondary-button"
+//               onClick={handleAddNextGuest}
+//             >
+//               Add Next Guest
+//             </button>
+//           )}
+//           <button
+//             type="button"
+//             className="primary-button"
+//             onClick={handleConfirmCheckIn}
+//             disabled={!allGuestsVerified}
+//           >
+//             Submit & Confirm Check-In
+//           </button>
+//         </div>
+//       </div>
+//       {showSuccessModal && (
+//         <SuccessModal
+//           show={showSuccessModal}
+//           handleClose={() => setShowSuccessModal(false)}
+//           message={modalMessage}
+//         />
+//       )}
+//     </div>
+//   );
+// };
+
+// export default FinalSummary;
+
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "./finalsummary.css"; // Create this CSS file
+import { Modal } from "react-bootstrap";
+import "./finalsummary.css";
+
+const SuccessModal = ({ show, handleClose, message }) => {
+  return (
+    <Modal show={show} onHide={handleClose} centered>
+      <Modal.Body className="text-center py-4">
+        <div className="success-animation">
+          <svg
+            className="checkmark"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 52 52"
+          >
+            <circle
+              className="checkmark__circle"
+              cx="26"
+              cy="26"
+              r="25"
+              fill="none"
+            />
+            <path
+              className="checkmark__check"
+              fill="none"
+              d="M14.1 27.2l7.1 7.2 16.7-16.8"
+            />
+          </svg>
+        </div>
+        <h4 className="mt-3 text-success">Success!</h4>
+        <p className="text-muted">{message || "Operation successful."}</p>
+      </Modal.Body>
+    </Modal>
+  );
+};
 
 const FinalSummary = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
-  // Retrieve data from location state. For a complete flow, this would
-  // be an array of all verified guests. We will use mock data for demonstration.
   const {
-    expectedAdults = 2,
-    expectedDependents = 1,
-    verifiedGuests = [
-      {
-        guestName: "John Doe",
-        phoneNumber: "9876543210",
-        aadhaarStatus: "Verified",
-        faceMatchResult: "Success",
-        dependentsLinked: 1,
-        timestamp: "18:05:00",
-      },
-      {
-        guestName: "Jane Doe",
-        phoneNumber: "9876543211",
-        aadhaarStatus: "Verified",
-        faceMatchResult: "Success",
-        dependentsLinked: 0,
-        timestamp: "18:10:00",
-      },
-    ],
+    reservationNumber,
+    totalGuests,
+    verifiedGuests = [],
   } = location.state || {};
 
-  const totalVerifiedAdults = verifiedGuests.length;
-  const totalVerifiedDependents = verifiedGuests.reduce(
-    (acc, guest) => acc + guest.dependentsLinked,
-    0
+  const [guestStatuses, setGuestStatuses] = useState(() =>
+    verifiedGuests.map((guest) => ({
+      ...guest,
+      aadhaarStatus: "Awaiting",
+      aadhaarTrafficLight: "yellow",
+      faceMatchResult: "Awaiting",
+      faceTrafficLight: "yellow",
+      timestamp: "",
+      showResend: true,
+    }))
   );
 
-  const isGuestCountMatched =
-    totalVerifiedAdults === expectedAdults &&
-    totalVerifiedDependents === expectedDependents;
+  useEffect(() => {
+    guestStatuses.forEach((guest, idx) => {
+      if (guest.aadhaarStatus === "Awaiting") {
+        // Aadhaar verification blinking (7s → green)
+        setTimeout(() => {
+          setGuestStatuses((prev) => {
+            const updated = [...prev];
+            updated[idx] = {
+              ...updated[idx],
+              aadhaarStatus: "Success",
+              aadhaarTrafficLight: "green",
+              showResend: false, // remove resend link after success
+            };
+            return updated;
+          });
+
+          // Face Match verification (start after Aadhaar success)
+          setTimeout(() => {
+            setGuestStatuses((prev) => {
+              const updated = [...prev];
+              updated[idx] = {
+                ...updated[idx],
+                faceMatchResult: "Success",
+                faceTrafficLight: "green",
+                timestamp: new Date().toLocaleString("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }),
+              };
+              return updated;
+            });
+          }, 8000); // Face match success after 8 sec
+        }, 7000); // Aadhaar success after 7 sec
+      }
+    });
+    // eslint-disable-next-line
+  }, []);
+
+  const allGuestsVerified =
+    guestStatuses.length === totalGuests &&
+    guestStatuses.every(
+      (g) => g.aadhaarStatus === "Success" && g.faceMatchResult === "Success"
+    );
 
   const handleConfirmCheckIn = () => {
-    // Primary CTA - Finalizes the check-in session.
-    // In a real application, this would be a final API call to mark the
-    // reservation as 'checked-in' in your system.
-    console.log("Check-in confirmed. Finalizing reservation.");
-    alert("Reservation check-in is now complete!");
-    navigate("/"); // Navigate back to the dashboard or a confirmation page
+    setShowSuccessModal(true);
+    setModalMessage("Reservation check-in complete!");
+    setTimeout(() => {
+      setShowSuccessModal(false);
+      navigate("/");
+    }, 1500);
   };
 
-  const handleBackToAddGuests = () => {
-    // Secondary CTA - Return to Screen 2 to add more guests.
-    navigate("/guest-phone-entry");
+  const handleAddNextGuest = () => {
+    navigate("/guest-phone-entry", {
+      state: {
+        reservationNumber,
+        totalGuests,
+        currentGuest: verifiedGuests.length + 1,
+        verifiedGuests,
+      },
+    });
   };
 
   const handleCancelVerification = () => {
@@ -65,28 +334,42 @@ const FinalSummary = () => {
     }
   };
 
+  const handleResendVerification = (idx) => {
+    setGuestStatuses((prev) => {
+      const updated = [...prev];
+      updated[idx] = {
+        ...updated[idx],
+        aadhaarStatus: "Awaiting",
+        aadhaarTrafficLight: "yellow",
+        faceMatchResult: "Awaiting",
+        faceTrafficLight: "yellow",
+        timestamp: "",
+        showResend: true,
+      };
+      return updated;
+    });
+  };
+  const handleRetry = (id) => {
+    setGuestStatuses((prev) => {
+      const updated = [...prev];
+      updated[id] = {
+        ...updated[id],
+        faceMatchResult: "Awaiting",
+        faceTrafficLight: "yellow",
+        timestamp: "",
+        showResend: true,
+      };
+      return updated;
+    });
+  };
+
   return (
     <div className="final-summary-container">
       <div className="summary-card">
-        <h2 className="header">Reservation Verification – Complete</h2>
-        <p className="subheader">All guests for this reservation have been verified.</p>
-
-        {!isGuestCountMatched && (
-          <div className="alert-box alert-mismatch">
-            <p>
-              <strong>Verification incomplete.</strong>{" "}
-              {expectedAdults - totalVerifiedAdults > 0
-                ? `${expectedAdults - totalVerifiedAdults} adult(s) `
-                : ""}
-              {expectedDependents - totalVerifiedDependents > 0
-                ? `${
-                    expectedDependents - totalVerifiedDependents
-                  } dependent(s) `
-                : ""}
-              remaining.
-            </p>
-          </div>
-        )}
+        <h2 className="header">Reservation Verification – Progress</h2>
+        <p className="subheader">
+          Verified {verifiedGuests.length} of {totalGuests} guests
+        </p>
 
         <div className="table-container">
           <table>
@@ -95,19 +378,68 @@ const FinalSummary = () => {
                 <th>Guest Name</th>
                 <th>Phone</th>
                 <th>Aadhaar Status</th>
-                <th>Face Match Result</th>
-                <th>Dependents Linked</th>
+                {guestStatuses.some((g) => g.aadhaarStatus !== "Success") && (
+                  <th>Resend Link</th>
+                )}
+                <th>Face Match</th>
+                {guestStatuses.some((g) => g.faceMatchResult !== "Success") && (
+                  <th>Retry faceMatch</th>
+                )}
                 <th>Timestamp</th>
               </tr>
             </thead>
             <tbody>
-              {verifiedGuests.map((guest, index) => (
+              {guestStatuses.map((guest, index) => (
                 <tr key={index}>
                   <td>{guest.guestName}</td>
                   <td>{guest.phoneNumber}</td>
-                  <td>{guest.aadhaarStatus}</td>
-                  <td>{guest.faceMatchResult}</td>
-                  <td>{guest.dependentsLinked}</td>
+                  <td>
+                    <span
+                      style={{ display: "flex", alignItems: "center", gap: 6 }}
+                    >
+                      <span
+                        className={`blinking-circle ${guest.aadhaarTrafficLight}`}
+                      />
+                      {guest.aadhaarStatus}
+                    </span>
+                  </td>
+                  {guestStatuses.some((g) => g.aadhaarStatus !== "Success") && (
+                    <td>
+                      {guest.aadhaarStatus !== "Success" &&
+                        guest.showResend && (
+                          <button
+                            onClick={() => handleResendVerification(index)}
+                            className="resend-link"
+                          >
+                            Resend Verification
+                          </button>
+                        )}
+                    </td>
+                  )}
+                  <td>
+                    <span
+                      style={{ display: "flex", alignItems: "center", gap: 6 }}
+                    >
+                      <span
+                        className={`blinking-circle ${guest.faceTrafficLight}`}
+                      />
+                      {guest.faceMatchResult}
+                    </span>
+                  </td>
+                  {guestStatuses.some(
+                    (g) => g.faceMatchResult !== "Success"
+                  ) && (
+                    <td>
+                      {guest.faceMatchResult !== "Success" && (
+                        <button
+                          onClick={() => handleRetry(index)}
+                          className="btn btn-primary"
+                        >
+                          Retry faceMatch
+                        </button>
+                      )}
+                    </td>
+                  )}
                   <td>{guest.timestamp}</td>
                 </tr>
               ))}
@@ -123,23 +455,32 @@ const FinalSummary = () => {
           >
             Cancel Verification
           </button>
-          <button
-            type="button"
-            className="secondary-button"
-            onClick={handleBackToAddGuests}
-          >
-            Back to Add More Guests
-          </button>
+          {!allGuestsVerified && (
+            <button
+              type="button"
+              className="secondary-button"
+              onClick={handleAddNextGuest}
+            >
+              Add Next Guest
+            </button>
+          )}
           <button
             type="button"
             className="primary-button"
             onClick={handleConfirmCheckIn}
-            disabled={!isGuestCountMatched}
+            disabled={!allGuestsVerified}
           >
             Submit & Confirm Check-In
           </button>
         </div>
       </div>
+      {showSuccessModal && (
+        <SuccessModal
+          show={showSuccessModal}
+          handleClose={() => setShowSuccessModal(false)}
+          message={modalMessage}
+        />
+      )}
     </div>
   );
 };
