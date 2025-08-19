@@ -249,14 +249,14 @@ const FinalSummary = () => {
   } = location.state || {};
 
   const [guestStatuses, setGuestStatuses] = useState(() =>
-    verifiedGuests.map((guest) => ({
+    verifiedGuests.map((guest, idx) => ({
       ...guest,
-      aadhaarStatus: "Awaiting",
-      aadhaarTrafficLight: "yellow",
-      faceMatchResult: "Awaiting",
-      faceTrafficLight: "yellow",
-      timestamp: "",
-      showResend: true,
+      aadhaarStatus: idx === verifiedGuests.length - 1 ? "Awaiting" : "Success",
+      aadhaarTrafficLight: idx === verifiedGuests.length - 1 ? "yellow" : "green",
+      faceMatchResult: idx === verifiedGuests.length - 1 ? "Awaiting" : "Success",
+      faceTrafficLight: idx === verifiedGuests.length - 1 ? "yellow" : "green",
+      timestamp: guest.timestamp || "19-Aug 17:15",
+      showResend: idx === verifiedGuests.length - 1,
     }))
   );
 
