@@ -13,7 +13,7 @@ const Login = lazy(() => import("./pages/Login"));
 // const FaceCapture = lazy(() => import("./pages/FaceCapture"));
 // const DependentLinking = lazy(() => import("./pages/DependentLinking"));
 // const VerificationSummary = lazy(() => import("./pages/VerificationSummary"));
-const FinalSummary = lazy(() => import("./pages/FinalSummary"));
+// const FinalSummary = lazy(() => import("./pages/FinalSummary"));
 
 const MainLayout = () => {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -50,7 +50,7 @@ const MainLayout = () => {
             {/* <Route path="/face-capture" element={<FaceCapture />} /> */}
             {/* <Route path="/dependent-linking" element={<DependentLinking />} /> */}
             {/* <Route path="/verification-summary" element={<VerificationSummary />} /> */}
-            <Route path="/final-summary" element={<FinalSummary />} />
+            {/* <Route path="/final-summary" element={<FinalSummary />} /> */}
           </Routes>
         </Suspense>
       </div>

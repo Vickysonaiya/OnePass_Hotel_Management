@@ -106,6 +106,85 @@
   }
 }
 
+.alert-animation {
+  margin: 0 auto;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.exclamation-mark {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 2;
+  stroke: #8e44ad; /* Purple border for the initial circle stroke */
+  stroke-miterlimit: 10;
+  box-shadow: inset 0px 0px 0px #8e44ad; /* For the fill animation */
+  animation: fill-alert 0.4s ease-in-out 0.4s forwards,
+             scale 0.3s ease-in-out 0.9s both;
+}
+
+.exclamation-mark__circle {
+  stroke-dasharray: 166; /* Circumference for animation */
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  stroke: #8e44ad; /* Purple circle stroke */
+  fill: none;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.exclamation-mark__stem {
+  /* No fill on the SVG element, stroke will draw it */
+  fill: none;
+  stroke: #ffffff; /* White color for exclamation mark stem */
+  stroke-width: 3; /* Increased stroke-width for a bolder stem */
+  stroke-linecap: round; /* Makes the ends of the stem rounded */
+  stroke-dasharray: 20; /* Length of the stem (34 - 13) */
+  stroke-dashoffset: 20;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards; /* Animation to draw the stem */
+}
+
+.exclamation-mark__dot {
+  opacity: 0; /* Starts hidden */
+  fill: #ffffff; /* White color for exclamation mark dot */
+  animation: fade-in 0.3s ease-in 1.1s forwards; /* Fades in slightly later than stem */
+}
+
+/* --- Keyframe Animations (unchanged) --- */
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fill-alert {
+  100% {
+    box-shadow: inset 0px 0px 0px 50px #8e44ad; /* Purple fill */
+  }
+}
+
+@keyframes scale {
+  0%,
+  100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+}
+
+@keyframes fade-in {
+  100% {
+    opacity: 1;
+  }
+}
+
 .sideSpace {
   padding-left: 10px;
   padding-right: 10px;
@@ -122,4 +201,20 @@
     width: 80px;
     height: 80px;
   }
+}
+
+.secondary-buttons {
+  background-color: rgb(231, 204, 48);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.secondary-buttons:hover {
+  background-color: rgb(231, 200, 24);
 }

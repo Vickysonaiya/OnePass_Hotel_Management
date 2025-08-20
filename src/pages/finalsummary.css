@@ -88,12 +88,12 @@ tr:hover {
 }
 
 .primary-button {
-  background-color: #28a745;
+  background-color: #1b3635;
   color: white;
 }
 
 .primary-button:hover:not(:disabled) {
-  background-color: #218838;
+  background-color: #1b3635;
 }
 
 .primary-button:disabled {
@@ -102,12 +102,12 @@ tr:hover {
 }
 
 .secondary-button {
-  background-color: #6c757d;
+  background-color: #dc3545;
   color: white;
 }
 
 .secondary-button:hover {
-  background-color: #5a6268;
+  background-color: #dc3545;
 }
 
 .blinking-circle {

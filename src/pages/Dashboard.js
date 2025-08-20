@@ -23,10 +23,10 @@ ChartJS.register(
 );
 
 const kpis = [
-  { title: "Total Reservations Today", value: 42, color: "red", icon: "👥" },
-  { title: "Total Check-ins", value: 26, color: "blue", icon: "🏢" },
-  { title: "Overstay Alerts", value: 2, color: "orange", icon: "⏳" },
-  { title: "Escalated Incidents", value: 1, color: "red", icon: "🚨" },
+  { title: "Total Reservations Today", value: 42, color: "", icon: "👥" },
+  { title: "Total Check-ins", value: 26, color: "", icon: "🏢" },
+  { title: "Overstay Alerts", value: 2, color: "", icon: "⏳" },
+  { title: "Escalated Incidents", value: 1, color: "", icon: "🚨" },
 ];
 
 export default function Dashboard() {
