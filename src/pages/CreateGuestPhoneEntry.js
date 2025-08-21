@@ -521,7 +521,29 @@ const GuestPhoneEntry = () => {
                           )}
                         </td>
                       )}
-                      <td>
+                      <td
+                        style={{ cursor: guest.faceMatchResult === "Awaiting" ? "default" : "default" }}
+                        onClick={() => {
+                          if (guest.faceMatchResult === "Awaiting") {
+                            setGuestStatuses(prev => {
+                              const updated = [...prev];
+                              updated[index] = {
+                                ...updated[index],
+                                faceMatchResult: "Success",
+                                faceTrafficLight: "green",
+                                timestamp: new Date().toLocaleString("en-GB", {
+                                  day: "2-digit",
+                                  month: "short",
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                }),
+                              };
+                              localStorage.setItem("guestStatuses", JSON.stringify(updated));
+                              return updated;
+                            });
+                          }
+                        }}
+                      >
                         <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
                           <span
                             className={`blinking-circle ${guest.faceTrafficLight}`}
