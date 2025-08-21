@@ -313,11 +313,11 @@ const GuestPhoneEntry = () => {
     };
 
     setVerifiedGuests((prev) => [...prev, newGuest]);
-    setShowSuccessModal(true);
+    // setShowSuccessModal(true);
     setModalMessage("Verification link sent successfully!");
     setPhoneNumber("");
     setTimeout(() => {
-      setShowSuccessModal(false);
+      // setShowSuccessModal(false);
     }, 1200);
   };
 
@@ -465,7 +465,7 @@ const GuestPhoneEntry = () => {
               Back
             </button>
             <button type="submit" className="primary-button">
-              Send Verification Link
+              Verigy Guest
             </button>
           </div>
         </form>
