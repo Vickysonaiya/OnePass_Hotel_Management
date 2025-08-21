@@ -870,7 +870,7 @@ const GuestPhoneEntry = () => {
     <div className="container">
       {verifiedGuests.length < Number(totalGuests) && (
         <div className="card">
-          <h2 className="header">Guest Verification – Step 1: Phone Number</h2>
+          <h2 className="header">Guest Verification for - {bookingId}</h2>
           <p className="subheader">
             Verifying guest <b>{Math.min(verifiedGuests.length + 1, Number(totalGuests))}</b> of <b>{totalGuests}</b>
           </p>
