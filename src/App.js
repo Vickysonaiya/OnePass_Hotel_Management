@@ -2,8 +2,12 @@ import React, { lazy, Suspense, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
+import AllGuestRecords from "./pages/AllGuestRecords";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import "./App.css";
+import SearchableGuestsRecords from "./pages/SearchableGuestsRecorde";
+import DateHoursFilter from "./components/Filter/DateHoursFilter";
+import DailyGuestLog from "./pages/DailyGuestLog";
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Login = lazy(() => import("./pages/Login"));
@@ -31,6 +35,13 @@ const MainLayout = () => {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/AllGuestRecords" element={<AllGuestRecords />} />
+            <Route
+              path="/SearchableGuestsRecords"
+              element={<SearchableGuestsRecords />}
+            />
+            <Route path="/DailyGuestsLog" element={<DailyGuestLog />} />
+            <Route path="/DateHoursFilter" element={<DateHoursFilter />} />
           </Routes>
         </Suspense>
       </div>

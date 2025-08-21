@@ -1,0 +1,215 @@
+.custom-table-wrapper {
+  border-top: 1px solid #ddd; /* outer border */
+  overflow: hidden; /* ensures header fits inside border */
+}
+
+/* Modern pill-style buttons */
+.pill-btn {
+  align-items: center;
+  background-color: initial;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  color: #1b3635;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
+  height: 35px;
+  padding: 6px 11px;
+  text-align: start;
+  transition: all 0.2s ease;
+}
+.pill-btn:hover {
+  border: 1px solid #1b3635;
+  background-color: none !important;
+}
+
+/* Table styles */
+.guest-table th {
+  font-size: 14px !important;
+  font-weight: 500;
+  padding: 12px 8px !important;
+}
+.guest-table td {
+  font-size: 14px;
+  color: #444;
+  padding: 12px 8px !important;
+  vertical-align: middle;
+}
+.guest-table tbody tr {
+  border-bottom: 1px solid #eee;
+}
+.guest-table tbody tr:hover {
+  background-color: #fafafa;
+}
+
+/* Status dot styling */
+
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+.status-dot.green {
+  background-color: green;
+}
+.status-dot.red {
+  background-color: red;
+}
+
+/**/
+
+.status-btn-group {
+  gap: 10px; /* spacing between buttons */
+}
+
+.status-btn {
+  background-color: initial;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  color: #1b3635;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
+  height: 42px;
+  padding: 9px 11px;
+  text-align: start;
+  transition: all 0.2s ease;
+  width: 199px;
+}
+
+.status-btn:hover {
+  border: 1px solid #1b3635;
+}
+
+.status-btn.active {
+  border: 1px solid #1b3635;
+  font-weight: 600;
+}
+
+/* Aadhar card styles */
+/* .aadhaar-card {
+  width: 100%;
+  margin: auto;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  font-family: Arial, sans-serif;
+  background: #fff;
+  overflow: hidden;
+}
+
+.aadhaar-header {
+  background: linear-gradient(to right, #ff5b5b, #52c25a);
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gov-text {
+  font-size: 12px;
+  text-align: left;
+  margin-left: 6px;
+}
+
+.aadhaar-logo {
+  width: 70px;
+  margin-right: 6px;
+}
+.IndianEmblem-logo {
+  width: 35px;
+  margin-left: 6px;
+}
+
+.aadhaar-body {
+  display: flex;
+  padding: 12px;
+}
+
+.photo-box {
+  width: 90px;
+  height: 110px;
+  border: 1px solid #aaa;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.details {
+  flex: 1;
+  font-size: 13px;
+}
+
+.details p {
+  margin: 2px 0;
+}
+
+.aadhaar-footer {
+  text-align: center;
+  background: #f1f1f1;
+  padding: 8px;
+  border-top: 1px solid #ddd;
+}
+
+.aadhaar-footer h5 {
+  margin: 0;
+  font-weight: bold;
+  letter-spacing: 2px;
+} */
+
+/* Guest details Card  */
+
+.guest-details-card {
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+}
+
+.guest-header {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.avatar-circle {
+  width: 60px;
+  height: 60px;
+  background: #ffffff;
+  color: black;
+  border: 1px solid #000000;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0 auto 10px;
+}
+
+.guest-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.guest-hotel {
+  color: #666;
+  font-size: 14px;
+}
+
+.guest-body p {
+  margin: 6px 0;
+  font-size: 14px;
+}
