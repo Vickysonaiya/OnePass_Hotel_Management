@@ -6,7 +6,7 @@
 .card {
   padding: 2.5rem;
   width: 100%;
-  max-width: 700px;
+  max-width: 980px;
   border: none;
   margin: auto;
 }
@@ -90,6 +90,7 @@
   justify-content: space-between;
   gap: 10px;
   margin: 30px;
+  width: 800px;
 }
 
 .form-card {
@@ -165,9 +166,13 @@
   border: none;
   color: #007bff;
   cursor: pointer;
-  font-size: 0.9em;
+  font-size: 18px;
   padding: 0;
   text-decoration: underline;
+  height: 30px;
+  margin-top: 35%;
+  display: flex;
+  justify-content: center;
 }
 
 .link-button:hover {
