@@ -16,7 +16,6 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider, DateCalendar } from "@mui/x-date-pickers";
 import { BiUndo } from "react-icons/bi";
 import testData from "../../testData.json";
-import "@fontsource/inter/400.css";
 
 const formatDate = (date) => {
   if (!date) return "";
@@ -49,6 +48,8 @@ const EvidenceFilter = () => {
   const singleDateRef = useRef(null);
   const startDateRef = useRef(null);
   const endDateRef = useRef(null);
+
+  const systemFont = `-apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif`;
 
   const filterShortNames = {
     "is in the last": "Last",
@@ -188,11 +189,11 @@ const EvidenceFilter = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Box sx={{ p: 0, width: 330 }}>
+      <Box sx={{ p: 0, width: 330, fontFamily: systemFont }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           {/* 🔹 Relative wrapper for button + popup */}
           <Box sx={{ position: "relative", display: "inline-block" }}>
-            <Box ref={toggleButtonRef} sx={{ fontFamily: "Inter, sans-serif" }}>
+            <Box ref={toggleButtonRef} sx={{ fontFamily: systemFont }}>
               <Button
                 onClick={() => {
                   setFilterVisible((prev) => {
@@ -203,14 +204,14 @@ const EvidenceFilter = () => {
                 }}
                 variant="outlined"
                 sx={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: systemFont,
                   borderRadius: "30px",
                   textTransform: "none",
-                  paddingY: "4px",
+                  paddingY: "6px",
                   paddingX: "12px",
                   borderColor: "#ccc",
                   backgroundColor: "#f8f8f8",
-                  fontSize: "14px",
+                  fontSize: "12px",
                   display: "flex",
                   alignItems: "center",
                   gap: 1,
@@ -219,9 +220,9 @@ const EvidenceFilter = () => {
               >
                 <span
                   style={{
-                    fontSize: "14px",
+                    fontSize: "12px",
                     color: "#444",
-                    fontFamily: "Inter, sans-serif",
+                    fontFamily: systemFont,
                   }}
                 >
                   ✕ Evidence due by
@@ -229,19 +230,19 @@ const EvidenceFilter = () => {
                 <span
                   title={getFilterLabel()}
                   style={{
-                    fontWeight: 500,
+                    fontFamily: systemFont,
+                    fontWeight: 600,
                     color: "#333",
                     maxWidth: "160px",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
                     display: "inline-block",
-                    fontFamily: "Inter, sans-serif",
                   }}
                 >
                   | {getFilterLabel()}
                 </span>
-                <ExpandMore sx={{ fontSize: 18 }} />
+                <ExpandMore sx={{ fontSize: 18, fontWeight: "600" }} />
               </Button>
             </Box>
 
@@ -267,6 +268,7 @@ const EvidenceFilter = () => {
                 <Box
                   id="evidence-filter-panel"
                   sx={{
+                    fontFamily: systemFont,
                     position: "absolute",
                     top: "calc(100% + 8px)",
                     left: 0,
@@ -279,14 +281,13 @@ const EvidenceFilter = () => {
                     flexDirection: "column",
                     gap: 2,
                     minWidth: "300px", // ✅ Added minimum width
-                    fontFamily: "Inter, sans-serif",
-                    "*": { fontFamily: "Inter, sans-serif !important" },
                   }}
                 >
                   <Typography
                     variant="subtitle1"
-                    fontWeight="bold"
-                    fontFamily={"Inter, sans-serif"}
+                    fontSize={14}
+                    fontWeight="600"
+                    sx={{ fontFamily: systemFont }}
                   >
                     Filter by Evidence due by
                   </Typography>
@@ -302,6 +303,8 @@ const EvidenceFilter = () => {
                           border: "1px solid #ccc",
                         },
                         height: 40,
+                        fontSize: "14px",
+                        fontWeight: 600,
                       }}
                     >
                       <MenuItem value="is in the last">is in the last</MenuItem>
@@ -328,7 +331,7 @@ const EvidenceFilter = () => {
                         onChange={(e) => setLastValue(e.target.value)}
                         variant="outlined"
                         size="small"
-                        sx={{ width: "100px" }}
+                        sx={{ width: "100px", fontFamily: systemFont }}
                       />
                       <FormControl size="small" sx={{ width: "100px" }}>
                         <Select
@@ -336,7 +339,7 @@ const EvidenceFilter = () => {
                           onChange={(e) => setLastUnit(e.target.value)}
                           displayEmpty
                           variant="outlined"
-                          sx={{ height: 40 }}
+                          sx={{ height: 40, fontFamily: systemFont }}
                         >
                           <MenuItem value="hours">hours</MenuItem>
                           <MenuItem value="days">days</MenuItem>
@@ -358,7 +361,13 @@ const EvidenceFilter = () => {
                         color="#2D9CDB"
                         style={{ transform: "scaleX(1) rotate(180deg)" }}
                       />
-                      <CalendarToday sx={{ color: "gray", fontSize: 20 }} />
+                      <CalendarToday
+                        sx={{
+                          color: "gray",
+                          fontSize: 20,
+                          fontFamily: systemFont,
+                        }}
+                      />
                       <TextField
                         id="start-date-input"
                         size="small"
@@ -375,10 +384,20 @@ const EvidenceFilter = () => {
                         sx={{
                           width: "120px",
                           "& fieldset": { borderColor: "#ccc" },
+                          fontFamily: systemFont,
+                          fontSize: "14px !important",
+                          fontWeight: 600,
                         }}
                       />
 
-                      <Typography sx={{ fontSize: "12px", color: "#666" }}>
+                      <Typography
+                        sx={{
+                          fontSize: "14px !important",
+                          fontWeight: 600,
+                          color: "#666",
+                          fontFamily: systemFont,
+                        }}
+                      >
                         and
                       </Typography>
 
@@ -398,20 +417,37 @@ const EvidenceFilter = () => {
                         sx={{
                           width: "120px",
                           "& fieldset": { borderColor: "#ccc" },
+                          fontFamily: systemFont,
+                          fontSize: "14px !important",
+                          fontWeight: 600,
                         }}
                       />
                     </Box>
                   ) : (
                     <Box
                       className="calendar-input"
-                      sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        fontSize: "14px !important",
+                        fontFamily: systemFont,
+                        fontWeight: 600,
+                      }}
                     >
                       <BiUndo
                         size={25}
                         color="#1B3631"
                         style={{ transform: "scaleX(1) rotate(180deg)" }}
                       />
-                      <CalendarToday sx={{ color: "gray", fontSize: 20 }} />
+                      <CalendarToday
+                        sx={{
+                          color: "gray",
+                          fontSize: 14,
+                          fontWeight: 500,
+                          fontFamily: systemFont,
+                        }}
+                      />
                       <TextField
                         size="small"
                         inputRef={singleDateRef}
@@ -423,10 +459,20 @@ const EvidenceFilter = () => {
                           handleDateFieldInteraction("single", date)
                         }
                         autoComplete="off"
-                        InputProps={{ sx: { height: 40 } }}
+                        InputProps={{
+                          sx: {
+                            height: 40,
+                            "& input": {
+                              fontSize: "14px", // ✅ applies font size to input text
+                              fontWeight: 400,
+                            },
+                          },
+                        }}
                         sx={{
                           width: "120px",
                           "& fieldset": { borderColor: "#ccc" },
+                          fontSize: "14px !important",
+                          fontWeight: 600,
                         }}
                       />
                     </Box>
@@ -446,6 +492,16 @@ const EvidenceFilter = () => {
                           handleAccept(newValue);
                           setOpenCalendar(false); // ✅ auto-close when date is picked
                         }}
+                        sx={{
+                          "& .MuiTypography-root": {
+                            fontFamily: `system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`,
+                            fontSize: "14px",
+                          },
+                          "& .MuiPickersDay-root": {
+                            fontSize: "14px", // dates inside the calendar
+                            fontFamily: `system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`,
+                          },
+                        }}
                       />
                     </Paper>
                   </Popper>
@@ -459,6 +515,8 @@ const EvidenceFilter = () => {
                       height: 40,
                       "&:hover": {
                         backgroundColor: "#1B3631",
+                        fontWeight: 600,
+                        fontSize: "14px !important",
                       },
                     }}
                   >

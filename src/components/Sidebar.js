@@ -1,19 +1,38 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import onepasslogo from "../assets/images/1pass_logo.jpg";
 import home from "../assets/icons/home.svg";
 import guestsIcon from "../assets/images/users.svg";
 import reservationIcon from "../assets/images/calendar.svg";
-import reportsIcon from "../assets/images/clipboard-minus.svg";
-import monitorIcon from "../assets/images/monitor.svg";
-import { HiChevronDown, HiChevronUp } from "react-icons/hi"; // add this import
+import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import "./sidebar.css";
 
 const Sidebar = ({ show, onClose }) => {
-  const [openGuestRecords, setOpenGuestRecords] = useState(false);
-  const [openReservations, setOpenReservations] = useState(false);
-  const [openReports, setOpenReports] = useState(false);
-  const [openAudit, setOpenAudit] = useState(false);
+  const [openMenu, setOpenMenu] = useState(null); // track which menu is open
+  const location = useLocation();
+
+  // Guest sub routes
+  const guestSubRoutes = [
+    "/AllGuestRecords",
+    "/VerificationFailures",
+    "/DependentRecords",
+  ];
+  const isGuestSubActive = guestSubRoutes.some((path) =>
+    location.pathname.includes(path)
+  );
+
+  // Reservation sub routes
+  const reservationSubRoutes = [
+    "/reservations/by-number",
+    "/reservations/by-hotel",
+  ];
+  const isReservationSubActive = reservationSubRoutes.some((path) =>
+    location.pathname.includes(path)
+  );
+
+  const toggleMenu = (menuName) => {
+    setOpenMenu(openMenu === menuName ? null : menuName);
+  };
 
   return (
     <div
@@ -52,6 +71,7 @@ const Sidebar = ({ show, onClose }) => {
             `nav-link sidebar-l1 mt ${isActive ? "active" : ""}`
           }
           end
+          onClick={() => setOpenMenu(null)}
         >
           {({ isActive }) => (
             <span className="d-flex align-items-center gap-1">
@@ -74,19 +94,14 @@ const Sidebar = ({ show, onClose }) => {
 
         {/* Guest Records */}
         <div className="mt-2">
-          <NavLink
-            to="#"
-            onClick={(e) => {
-              e.preventDefault();
-              setOpenGuestRecords(!openGuestRecords);
-            }}
-            className={({ isActive }) =>
-              `nav-link sidebar-l1 d-flex justify-content-between align-items-center ${
-                openGuestRecords ? "active" : ""
-              }`
-            }
+          <button
+            type="button"
+            onClick={() => toggleMenu("guests")}
+            className={`nav-link sidebar-l1 d-flex justify-content-between align-items-center ${
+              openMenu === "guests" || isGuestSubActive ? "active" : ""
+            }`}
+            style={{ width: "100%" }}
           >
-            {/* Left: icon + label */}
             <span className="d-flex align-items-center">
               <img
                 src={guestsIcon}
@@ -95,30 +110,28 @@ const Sidebar = ({ show, onClose }) => {
               />
               Guest Records
             </span>
-
-            {/* Right: arrow */}
-            <span className="d-flex align-items-center">
-              {openGuestRecords ? (
+            <span className="ms-auto d-flex align-items-center">
+              {openMenu === "guests" ? (
                 <HiChevronUp size={20} />
               ) : (
                 <HiChevronDown size={20} />
               )}
             </span>
-          </NavLink>
+          </button>
 
-          {openGuestRecords && (
+          {openMenu === "guests" && (
             <div className="GuestsSubRecords nav flex-column">
-              <NavLink to="AllGuestRecords" className="nav-link sidebar-l2">
-                All Guest Records
+              <NavLink to="/AllGuestRecords" className="nav-link sidebar-l2">
+                Guest Records
               </NavLink>
               <NavLink
-                to="SearchableGuestsRecords"
+                to="/VerificationFailures"
                 className="nav-link sidebar-l2"
               >
-                Search Records
+                Verification Failures
               </NavLink>
-              <NavLink to="DailyGuestsLog" className="nav-link sidebar-l2">
-                Daily Guest Log
+              <NavLink to="/DependentRecords" className="nav-link sidebar-l2">
+                Dependent Records
               </NavLink>
             </div>
           )}
@@ -126,19 +139,16 @@ const Sidebar = ({ show, onClose }) => {
 
         {/* Reservation Details */}
         <div className="mt-2">
-          <NavLink
-            to="#"
-            onClick={(e) => {
-              e.preventDefault();
-              setOpenReservations(!openReservations);
-            }}
-            className={({ isActive }) =>
-              `nav-link sidebar-l1 d-flex justify-content-between align-items-center ${
-                openReservations ? "active" : ""
-              }`
-            }
+          <button
+            type="button"
+            onClick={() => toggleMenu("reservations")}
+            className={`nav-link d-flex justify-content-between align-items-center sidebar-l1 ${
+              openMenu === "reservations" || isReservationSubActive
+                ? "active"
+                : ""
+            }`}
+            style={{ width: "100%" }}
           >
-            {/* Left: icon + label */}
             <span className="d-flex align-items-center">
               <img
                 src={reservationIcon}
@@ -147,18 +157,16 @@ const Sidebar = ({ show, onClose }) => {
               />
               Reservation Details
             </span>
-
-            {/* Right: arrow */}
-            <span className="d-flex align-items-center">
-              {openReservations ? (
+            <span className="ms-auto d-flex align-items-center">
+              {openMenu === "reservations" ? (
                 <HiChevronUp size={20} />
               ) : (
                 <HiChevronDown size={20} />
               )}
             </span>
-          </NavLink>
+          </button>
 
-          {openReservations && (
+          {openMenu === "reservations" && (
             <div className="GuestsSubRecords nav flex-column">
               <NavLink
                 to="/reservations/by-number"
@@ -170,118 +178,7 @@ const Sidebar = ({ show, onClose }) => {
                 to="/reservations/by-hotel"
                 className="nav-link sidebar-l2"
               >
-                By Hotel
-              </NavLink>
-            </div>
-          )}
-        </div>
-
-        {/* Reports */}
-        <div className="mt-2">
-          <NavLink
-            to="#"
-            onClick={(e) => {
-              e.preventDefault();
-              setOpenReports(!openReports);
-            }}
-            className={({ isActive }) =>
-              `nav-link sidebar-l1 d-flex justify-content-between align-items-center ${
-                openReports ? "active" : ""
-              }`
-            }
-          >
-            {/* Left: icon + label */}
-            <span className="d-flex align-items-center">
-              <img
-                src={reportsIcon}
-                alt="Reports"
-                style={{ width: 16, height: 16, marginRight: 8 }}
-              />
-              Reports
-            </span>
-
-            {/* Right: arrow */}
-            <span className="d-flex align-items-center">
-              {openReports ? (
-                <HiChevronUp size={20} />
-              ) : (
-                <HiChevronDown size={20} />
-              )}
-            </span>
-          </NavLink>
-
-          {openReports && (
-            <div className="GuestsSubRecords nav flex-column">
-              <NavLink
-                to="/reports/export"
-                className="nav-link sidebar-l2 d-flex align-items-center gap-1"
-              >
-                Export Records
-              </NavLink>
-              <NavLink
-                to="/reports/verification-failures"
-                className="nav-link sidebar-l2 d-flex align-items-center gap-1"
-              >
-                Verification Failures
-              </NavLink>
-              <NavLink
-                to="/reports/dependents"
-                className="nav-link sidebar-l2 d-flex align-items-center gap-1"
-              >
-                Dependent Records
-              </NavLink>
-            </div>
-          )}
-        </div>
-
-        {/* Audit & Monitoring */}
-        <div className="mt-2">
-          <NavLink
-            to="#"
-            onClick={(e) => {
-              e.preventDefault();
-              setOpenAudit(!openAudit);
-            }}
-            className={({ isActive }) =>
-              `nav-link sidebar-l1 d-flex justify-content-between align-items-center ${
-                openAudit ? "active" : ""
-              }`
-            }
-          >
-            {/* Left: icon + label */}
-            <span className="d-flex align-items-center">
-              <img
-                src={monitorIcon}
-                alt="Audit & Monitoring"
-                style={{ width: 16, height: 16, marginRight: 8 }}
-              />
-              Audit & Monitoring
-            </span>
-
-            {/* Right: arrow */}
-            <span className="d-flex align-items-center">
-              {openAudit ? (
-                <HiChevronUp size={20} />
-              ) : (
-                <HiChevronDown size={20} />
-              )}
-            </span>
-          </NavLink>
-
-          {openAudit && (
-            <div className="GuestsSubRecords nav flex-column">
-              <NavLink
-                to="/audit/checkin-timeline"
-                className="nav-link sidebar-l2 d-flex align-items-center gap-1"
-              >
-                Check-In Timeline
-              </NavLink>
-
-              <NavLink
-                to="/audit/staff-actions"
-                className="nav-link sidebar-l2 d-flex align-items-center gap-1"
-              >
-                Staff Actions
+                By Property
               </NavLink>
             </div>
           )}

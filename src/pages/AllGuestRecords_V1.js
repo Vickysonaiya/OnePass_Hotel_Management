@@ -4,10 +4,8 @@ import { format } from "date-fns";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import * as XLSX from "xlsx";
-import Aadhar from "../assets/images/aadhaar-1.svg";
-import IndianEmblem from "../assets/images/emblem-of-india-1.svg";
 import "./AllGuestRecords.css";
-import { HiOutlineDownload, HiOutlineRefresh } from "react-icons/hi";
+import { HiOutlineDownload } from "react-icons/hi";
 import DateHoursFilter from "../components/Filter/DateHoursFilter";
 
 const AllGuestRecords = () => {
@@ -214,8 +212,8 @@ const AllGuestRecords = () => {
       </div>
 
       {/* Action filters + buttons */}
-      <div className="d-flex align-items-center mb-3 flex-wrap gap-2">
-        <div className="ms-auto">
+      <div className="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+        <div>
           <DateHoursFilter />
         </div>
         <div className="d-flex gap-2">
@@ -224,9 +222,6 @@ const AllGuestRecords = () => {
           </button>
           <button className="pill-btn" onClick={exportPDF}>
             <HiOutlineDownload size={18} /> Export PDF
-          </button>
-          <button className="pill-btn" onClick={() => window.location.reload()}>
-            <HiOutlineRefresh size={18} /> Refresh
           </button>
         </div>
       </div>
@@ -238,10 +233,11 @@ const AllGuestRecords = () => {
             <tr>
               <th>Check-in Date</th>
               <th>Property</th>
+              <th>Reservation</th>
               <th>Guest Name</th>
               <th>Phone</th>
               <th>Verification</th>
-              <th>Details</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -256,13 +252,16 @@ const AllGuestRecords = () => {
                   <small className="text-muted">{r.location}</small>
                 </td>
 
-                {/* 3. Guest Name */}
+                {/* 3. Reservation number */}
+                <td>{r.reservation}</td>
+
+                {/* 4. Guest Name */}
                 <td>{r.name}</td>
 
-                {/* 4. Phone (masked) */}
+                {/* 5. Phone (masked) */}
                 <td>{maskPhone(r.phone)}</td>
 
-                {/* 5. Verification status with traffic light */}
+                {/* 6. Verification status */}
                 <td>
                   {r.verification === "Aadhaar" && r.faceMatch === "Match" ? (
                     <span className="d-flex align-items-center gap-1">
@@ -293,20 +292,19 @@ const AllGuestRecords = () => {
                   )}
                 </td>
 
-                {/* 6. Details column */}
+                {/* 7. Details link (row only, no header) */}
                 <td>
-                  <button
-                    size="sm"
+                  <span
                     style={{
-                      border: "1px solid #ccc",
-                      borderRadius: "4px",
-                      background: "transparent",
-                      padding: "4px 8px",
+                      color: "#1976d2",
+                      cursor: "pointer",
+                      textDecoration: "none",
+                      fontSize: "14px",
                     }}
                     onClick={() => handleShowDetails(r)}
                   >
-                    Details
-                  </button>
+                    View Details
+                  </span>
                 </td>
               </tr>
             ))}
