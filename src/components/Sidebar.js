@@ -41,73 +41,13 @@
 //           alt="avatar"
 //           className="me-2 logo"
 //           width={46}
-//           height={46}
-//         />
-//         {/* <span className="fw-bold">{user}</span> */}
-//       </div>
-
-//       <nav className="nav flex-column">
-//         <NavLink
-//           to="/"
-//           className={({ isActive }) =>
-//             `nav-link sidebar-l1 mt ${isActive ? "active" : ""}`
-//           }
-//           end
-//         >
-//           {({ isActive }) => (
-//             <span className="d-flex align-items-center gap-1">
-//               <img
-//                 src={home}
-//                 alt="Home"
-//                 style={{
-//                   width: 16,
-//                   height: 16,
-//                   marginRight: 8,
-//                   filter: isActive
-//                     ? "invert(34%) sepia(99%) saturate(747%) hue-rotate(186deg) brightness(97%) contrast(101%)"
-//                     : "none",
-//                 }}
-//               />
-//               Home
-//             </span>
-//           )}
-//         </NavLink>
-//         {/* <NavLink
-//           to="/reservation-entry"
-//           className={({ isActive }) =>
-//             `nav-link sidebar-l1 ${isActive ? "active" : ""}`
-//           }>
-//           {({ isActive }) => (
-//             <span className="d-flex align-items-center gap-1">
-//               <img
-//                 src={Calendar}
-//                 alt="Calendar"
-//                 style={{
-//                   width: 16,
-//                   height: 16,
-//                   marginRight: 8,
-//                   filter: isActive
-//                     ? "invert(34%) sepia(99%) saturate(747%) hue-rotate(186deg) brightness(97%) contrast(101%)"
-//                     : "none",
-//                 }}
-//               />
-//               Guest Verification
-//             </span>
-//           )}
-//         </NavLink> */}
-//         <div className="mt-2">
-//           <NavLink
-//             to="#"
-//             onClick={(e) => {
-//               e.preventDefault();
-//               setOpenReservations(!openReservations);
-//             }}
-//             className={({ isActive }) =>
-//               `nav-link sidebar-l1 d-flex justify-content-between align-items-center ${
-//                 openReservations ? "active" : ""
-//               }`
-//             }
-//           >
+  // useEffect(() => {
+  //   if (location.pathname === "/reservation-entry" || location.pathname === "/mis-report") {
+  //     setOpenReservations(true);
+  //   } else {
+  //     setOpenReservations(false);
+  //   }
+  // }, [location]);
 //             {/* Left: icon + label */}
 //             <span className="d-flex align-items-center">
 //               <img
@@ -284,7 +224,8 @@
 
 // export default Sidebar;
 
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import onepasslogo from "../assets/images/1pass_logo.jpg";
 import home from "../assets/icons/home.svg";
@@ -296,9 +237,11 @@ const Sidebar = ({ show, onClose }) => {
   const [openReservations, setOpenReservations] = useState(false);
   const location = useLocation();
 
-  // Close dropdown when route changes (e.g., submenu clicked)
-  React.useEffect(() => {
-    if (location.pathname !== "/reservation-entry") {
+  // Keep Guest Verification dropdown open on reservation-entry and mis-report
+  useEffect(() => {
+    if (location.pathname === "/reservation-entry" || location.pathname === "/mis-report") {
+      setOpenReservations(true);
+    } else {
       setOpenReservations(false);
     }
   }, [location]);
@@ -340,10 +283,9 @@ const Sidebar = ({ show, onClose }) => {
           className={({ isActive }) =>
             `nav-link sidebar-l1 mt ${isActive ? "active" : ""}`
           }
-          end
         >
           {({ isActive }) => (
-            <span className="d-flex align-items-center gap-1">
+            <span className="d-flex align-items-center">
               <img
                 src={home}
                 alt="Home"
@@ -364,10 +306,10 @@ const Sidebar = ({ show, onClose }) => {
         {/* ✅ Guest Verification Dropdown */}
         <div className="mt-2">
           <button
-            className={`nav-link sidebar-l1 d-flex justify-content-between align-items-center w-100 ${
-              openReservations ? "open" : ""
-            }`}
+            className={`nav-link sidebar-l1 d-flex justify-content-between align-items-center w-100 ${openReservations ? "open" : ""}`}
             onClick={() => setOpenReservations(!openReservations)}
+            type="button"
+            aria-expanded={openReservations}
           >
             <span className="d-flex align-items-center">
               <img
@@ -378,11 +320,7 @@ const Sidebar = ({ show, onClose }) => {
               Guest Verification
             </span>
             <span className="d-flex align-items-center">
-              {openReservations ? (
-                <HiChevronUp size={20} />
-              ) : (
-                <HiChevronDown size={20} />
-              )}
+              {openReservations ? <HiChevronUp size={20} /> : <HiChevronDown size={20} />}
             </span>
           </button>
 
@@ -393,8 +331,28 @@ const Sidebar = ({ show, onClose }) => {
                 className={({ isActive }) =>
                   `nav-link sidebar-l2 ${isActive ? "active" : ""}`
                 }
+                onClick={e => {
+                  // Keep dropdown open when navigating to reservation-entry
+                  setOpenReservations(true);
+                }}
               >
                 Start New Verification
+              </NavLink>
+            </div>
+          )}
+          {openReservations && (
+            <div className="GuestsSubRecords nav flex-column">
+              <NavLink
+                to="/mis-report"
+                className={({ isActive }) =>
+                  `nav-link sidebar-l2 ${isActive ? "active" : ""}`
+                }
+                onClick={e => {
+                  // Keep dropdown open when navigating to mis-report
+                  setOpenReservations(true);
+                }}
+              >
+                MIS Reports
               </NavLink>
             </div>
           )}

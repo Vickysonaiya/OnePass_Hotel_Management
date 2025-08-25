@@ -2,10 +2,12 @@ import React, { lazy, Suspense, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
+import Filter from "./components/DateHoursFilter";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import "./App.css";
 import CreateGuestPhoneEntry from "./pages/CreateGuestPhoneEntry";
 import CreateReservationEntry from "./pages/CreateReservationEntry";
+import MisReport from "./pages/AllGuestRecords";
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Login = lazy(() => import("./pages/Login"));
@@ -45,6 +47,14 @@ const MainLayout = () => {
             <Route
               path="/guest-phone-entry"
               element={<CreateGuestPhoneEntry />}
+            />
+            <Route
+              path="/mis-report"
+              element={<MisReport />}
+            />
+            <Route
+              path="/filtered-mis-report"
+              element={<Filter />}
             />
             {/* <Route path="/aadhaar-verification" element={<AadhaarVerificationStatus />} /> */}
             {/* <Route path="/face-capture" element={<FaceCapture />} /> */}
