@@ -163,7 +163,7 @@ const ReservationEntry = () => {
       {/* Reservation List Modal */}
       {isModalOpen && (
         <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <div className="modal-contents" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3>Today's Bookings</h3>
               <button
