@@ -99,9 +99,15 @@
   } }
 /* ==== Table Container ==== */
 .guest-table-container {
-  overflow-x: auto;
   padding: 10px;
   border-radius: 10px;
+
+  /* NEW: restrict height & scroll only inside */
+  max-height: 300px; /* approx 5 rows height */
+  overflow-y: auto;
+
+  /* Prevent horizontal scroll outside */
+  overflow-x: hidden;
 }
 
 /* ==== Table ==== */
