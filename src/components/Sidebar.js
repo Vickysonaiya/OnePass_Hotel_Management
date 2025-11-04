@@ -228,7 +228,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import onepasslogo from "../assets/images/1pass_logo.jpg";
-import home from "../assets/icons/home.svg";
+// import home from "../assets/icons/home.svg";
 import Calendar from "../assets/icons/calendar-cog.svg";
 import "./sidebar.css";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
@@ -277,7 +277,7 @@ const Sidebar = ({ show, onClose }) => {
 
       <nav className="nav flex-column">
         {/* ✅ Home closes dropdown */}
-        <NavLink
+        {/* <NavLink
           to="/"
           onClick={() => setOpenReservations(false)}
           className={({ isActive }) =>
@@ -301,7 +301,7 @@ const Sidebar = ({ show, onClose }) => {
               Home
             </span>
           )}
-        </NavLink>
+        </NavLink> */}
 
         {/* ✅ Guest Verification Dropdown */}
         <div className="mt-2">

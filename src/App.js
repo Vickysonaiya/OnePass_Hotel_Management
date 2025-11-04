@@ -9,7 +9,7 @@ import CreateGuestPhoneEntry from "./pages/CreateGuestPhoneEntry";
 import CreateReservationEntry from "./pages/CreateReservationEntry";
 import MisReport from "./pages/AllGuestRecords";
 
-const Dashboard = lazy(() => import("./pages/Dashboard"));
+// const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Login = lazy(() => import("./pages/Login"));
 // const AadhaarVerificationStatus = lazy(() => import("./pages/AadhaarVerificationStatus"));
 // const FaceCapture = lazy(() => import("./pages/FaceCapture"));
@@ -38,7 +38,8 @@ const MainLayout = () => {
         <Header onSidebarToggle={() => setShowSidebar(true)} />
         <Suspense fallback={<div>Loading...</div>}>
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            {/* <Route path="/" element={<Dashboard />} /> */}
+            <Route path="/" element={<CreateReservationEntry />} />
             <Route path="/login" element={<Login />} />
             <Route
               path="/reservation-entry"
