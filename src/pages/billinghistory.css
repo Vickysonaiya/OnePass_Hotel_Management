@@ -1,0 +1,273 @@
+/* Billing History Specific Styles */
+.billing-history-table th {
+  background: #f5f9ff;
+  padding: 16px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #0d47a1;
+  border-bottom: 2px solid #e3f2fd;
+}
+
+.invoice-number-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.invoice-icon {
+  font-size: 1.2rem;
+}
+
+.invoice-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.invoice-no {
+  font-weight: 600;
+  color: #333;
+}
+
+.invoice-id {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 2px;
+}
+
+.invoice-date {
+  color: #333;
+  font-weight: 500;
+}
+
+.credits-purchased-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.credits-count {
+  font-weight: 600;
+  color: #2196f3;
+  font-size: 1.1rem;
+}
+
+.credits-label {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.payment-mode-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.payment-icon {
+  font-size: 1.1rem;
+}
+
+.payment-mode {
+  font-weight: 500;
+  color: #333;
+}
+
+.amount-paid {
+  font-weight: 600;
+  color: #2e7d32;
+  font-size: 1.1rem;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-paid {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.status-pending {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
+.status-failed {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.download-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.download-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.download-btn:hover:not(:disabled) {
+  background: #1976d2;
+  transform: translateY(-1px);
+}
+
+.download-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Transaction Summary */
+.transaction-summary {
+  padding: 20px 0;
+}
+
+.summary-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.summary-item {
+  text-align: center;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #2196f3;
+}
+
+.summary-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.summary-value {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.summary-change {
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.summary-change.positive {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.summary-change.negative {
+  background: #ffebee;
+  color: #c62828;
+}
+
+/* Payment Methods */
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.payment-method-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #4caf50;
+}
+
+.method-icon {
+  font-size: 1.5rem;
+}
+
+.method-info {
+  flex: 1;
+}
+
+.method-name {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 2px;
+}
+
+.method-usage {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+/* Pagination */
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.pagination-btn {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: #f5f5f5;
+  border-color: #2196f3;
+}
+
+.pagination-btn:disabled {
+  background: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .filters-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .summary-stats {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .billing-history-table {
+    min-width: 900px;
+  }
+  
+  .pagination-controls {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
