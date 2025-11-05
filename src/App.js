@@ -8,6 +8,11 @@ import "./App.css";
 import CreateGuestPhoneEntry from "./pages/CreateGuestPhoneEntry";
 import CreateReservationEntry from "./pages/CreateReservationEntry";
 import MisReport from "./pages/AllGuestRecords";
+import Dashboard from "./pages/Dashboard";
+import CreditOverview from "./pages/CreditOverview";
+import CreditConsumption from "./pages/CreditConsumption";
+import BillingHistory from "./pages/BillingHistory";
+import AccessAndSettings from "./pages/AccessAndSettings";
 
 // const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Login = lazy(() => import("./pages/Login"));
@@ -39,7 +44,7 @@ const MainLayout = () => {
         <Suspense fallback={<div>Loading...</div>}>
           <Routes>
             {/* <Route path="/" element={<Dashboard />} /> */}
-            <Route path="/" element={<CreateReservationEntry />} />
+            <Route path="/" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
             <Route
               path="/reservation-entry"
@@ -57,10 +62,10 @@ const MainLayout = () => {
               path="/filtered-mis-report"
               element={<Filter />}
             />
-            {/* <Route path="/aadhaar-verification" element={<AadhaarVerificationStatus />} /> */}
-            {/* <Route path="/face-capture" element={<FaceCapture />} /> */}
-            {/* <Route path="/dependent-linking" element={<DependentLinking />} /> */}
-            {/* <Route path="/verification-summary" element={<VerificationSummary />} /> */}
+            <Route path="/creditoverview" element={<CreditOverview />} />
+            <Route path="/credit-consumption" element={<CreditConsumption />} />
+            <Route path="/billing-history" element={<BillingHistory />} />
+            <Route path="/access-settings" element={<AccessAndSettings />} />
             {/* <Route path="/final-summary" element={<FinalSummary />} /> */}
           </Routes>
         </Suspense>

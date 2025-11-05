@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -23,56 +23,142 @@ ChartJS.register(
 );
 
 const kpis = [
-  { title: "Total Reservations Today", value: 42, color: "", icon: "👥" },
-  { title: "Total Check-ins", value: 26, color: "", icon: "🏢" },
-  { title: "Overstay Alerts", value: 2, color: "", icon: "⏳" },
-  { title: "Escalated Incidents", value: 1, color: "", icon: "🚨" },
+  { title: "Total Properties", value: 42, color: "", icon: "👥" },
+  {
+    title: "Total Check-ins (Current Month)",
+    value: 26,
+    color: "",
+    icon: "🏢",
+  },
+  { title: "Total Credits (Remaining)", value: 2, color: "", icon: "⏳" },
+  {
+    title: "Average Credit Consumption per Day",
+    value: 1,
+    color: "",
+    icon: "🚨",
+  },
+];
+
+// Sample table data
+const initialTableData = [
+  {
+    id: 1,
+    propertyName: "Grand Plaza Hotel",
+    location: "New York, NY",
+    propertyId: "GP001",
+    totalRooms: 150,
+    activeCheckins: 45,
+  },
+  {
+    id: 2,
+    propertyName: "Sunset Resort",
+    location: "Miami, FL",
+    propertyId: "SR002",
+    totalRooms: 200,
+    activeCheckins: 89,
+  },
+  {
+    id: 3,
+    propertyName: "Mountain View Inn",
+    location: "Denver, CO",
+    propertyId: "MV003",
+    totalRooms: 80,
+    activeCheckins: 32,
+  },
+  {
+    id: 4,
+    propertyName: "Ocean Breeze Suites",
+    location: "San Diego, CA",
+    propertyId: "OB004",
+    totalRooms: 120,
+    activeCheckins: 67,
+  },
+  {
+    id: 5,
+    propertyName: "City Center Hotel",
+    location: "Chicago, IL",
+    propertyId: "CC005",
+    totalRooms: 180,
+    activeCheckins: 54,
+  },
+  {
+    id: 6,
+    propertyName: "Heritage Palace",
+    location: "Boston, MA",
+    propertyId: "HP006",
+    totalRooms: 95,
+    activeCheckins: 28,
+  },
+  {
+    id: 7,
+    propertyName: "Lakeside Retreat",
+    location: "Seattle, WA",
+    propertyId: "LR007",
+    totalRooms: 60,
+    activeCheckins: 18,
+  },
+  {
+    id: 8,
+    propertyName: "Desert Oasis",
+    location: "Phoenix, AZ",
+    propertyId: "DO008",
+    totalRooms: 110,
+    activeCheckins: 42,
+  },
 ];
 
 export default function Dashboard() {
-  // const [incidents, setIncidents] = useState([
-  //   { time: "10:15 AM", message: "Visitor in restricted zone", type: "alert" },
-  //   { time: "09:45 AM", message: "Overstay alert triggered", type: "warning" },
-  // ]);
-
-  // const [pendingRequests, setPendingRequests] = useState([
-  //   { visitorName: "John Doe", purpose: "Client Meeting", time: "10:45 AM" },
-  //   {
-  //     visitorName: "Jane Smith",
-  //     purpose: "Maintenance Work",
-  //     time: "11:00 AM",
-  //   },
-  //   { visitorName: "Ali Khan", purpose: "Delivery", time: "11:15 AM" },
-  // ]);
-
-  // const handleApprove = (index) => {
-  //   const approved = pendingRequests[index];
-  //   alert(`Approved: ${approved.visitorName}`);
-  //   setPendingRequests((prev) => prev.filter((_, i) => i !== index));
-  // };
-
-  // const handleReject = (index) => {
-  //   const rejected = pendingRequests[index];
-  //   alert(`Rejected: ${rejected.visitorName}`);
-  //   setPendingRequests((prev) => prev.filter((_, i) => i !== index));
-  // };
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     const newIncident = {
-  //       time: new Date().toLocaleTimeString(),
-  //       message:
-  //         Math.random() > 0.5
-  //           ? "Random security check triggered"
-  //           : "Suspicious activity detected",
-  //       type: Math.random() > 0.5 ? "alert" : "warning",
-  //     };
-  //     setIncidents((prev) => [newIncident, ...prev].slice(0, 5));
-  //   }, 5000);
-  //   return () => clearInterval(interval);
-  // }, []);
-
   const chartRef = useRef(null);
+  const [tableData, setTableData] = useState(initialTableData);
+  const [filters, setFilters] = useState({
+    propertyName: "",
+    location: "",
+    propertyId: "",
+    totalRooms: "",
+    activeCheckins: "",
+  });
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
+
+  // Filter handler
+  const handleFilterChange = (key, value) => {
+    setFilters((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  // Sort handler
+  const handleSort = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+
+    const sortedData = [...tableData].sort((a, b) => {
+      if (a[key] < b[key]) return direction === "asc" ? -1 : 1;
+      if (a[key] > b[key]) return direction === "asc" ? 1 : -1;
+      return 0;
+    });
+    setTableData(sortedData);
+  };
+
+  // Apply filters
+  const filteredData = tableData.filter((item) => {
+    return (
+      item.propertyName
+        .toLowerCase()
+        .includes(filters.propertyName.toLowerCase()) &&
+      item.location.toLowerCase().includes(filters.location.toLowerCase()) &&
+      item.propertyId
+        .toLowerCase()
+        .includes(filters.propertyId.toLowerCase()) &&
+      (filters.totalRooms === "" ||
+        item.totalRooms.toString().includes(filters.totalRooms)) &&
+      (filters.activeCheckins === "" ||
+        item.activeCheckins.toString().includes(filters.activeCheckins))
+    );
+  });
 
   const barChartData = {
     labels: [
@@ -96,16 +182,15 @@ export default function Dashboard() {
           const { ctx, chartArea } = chart;
           if (!chartArea) return null;
 
-          // Gradient from solid blue to transparent
           const gradient = ctx.createLinearGradient(
             0,
             chartArea.top,
             0,
             chartArea.bottom
           );
-          gradient.addColorStop(0, "#2196f3"); // top - blue
-          gradient.addColorStop(0.5, "rgba(33,150,243,1)"); // mid
-          gradient.addColorStop(1, "rgba(33,150,243,0.3)"); // bottom transparent
+          gradient.addColorStop(0, "#2196f3");
+          gradient.addColorStop(0.5, "rgba(33,150,243,1)");
+          gradient.addColorStop(1, "rgba(33,150,243,0.3)");
           return gradient;
         },
         borderRadius: { topLeft: 22, topRight: 22 },
@@ -194,56 +279,189 @@ export default function Dashboard() {
           </div>
         ))}
       </div>
+      <div className="table-section">
+        <div className="table-header">
+          <h3>Properties Overview</h3>
+          <div className="table-controls">
+            <button className="export-btn">Export CSV</button>
+            <button className="refresh-btn">Refresh Data</button>
+          </div>
+        </div>
+
+        <div className="table-container">
+          <table className="properties-table">
+            <thead>
+              <tr>
+                <th onClick={() => handleSort("propertyName")}>
+                  Property Name
+                  {sortConfig.key === "propertyName" && (
+                    <span className="sort-indicator">
+                      {sortConfig.direction === "asc" ? " ↑" : " ↓"}
+                    </span>
+                  )}
+                </th>
+                <th onClick={() => handleSort("location")}>
+                  Location
+                  {sortConfig.key === "location" && (
+                    <span className="sort-indicator">
+                      {sortConfig.direction === "asc" ? " ↑" : " ↓"}
+                    </span>
+                  )}
+                </th>
+                <th onClick={() => handleSort("propertyId")}>
+                  Property ID
+                  {sortConfig.key === "propertyId" && (
+                    <span className="sort-indicator">
+                      {sortConfig.direction === "asc" ? " ↑" : " ↓"}
+                    </span>
+                  )}
+                </th>
+                <th onClick={() => handleSort("totalRooms")}>
+                  Total Rooms
+                  {sortConfig.key === "totalRooms" && (
+                    <span className="sort-indicator">
+                      {sortConfig.direction === "asc" ? " ↑" : " ↓"}
+                    </span>
+                  )}
+                </th>
+                <th onClick={() => handleSort("activeCheckins")}>
+                  Active Check-ins (Today)
+                  {sortConfig.key === "activeCheckins" && (
+                    <span className="sort-indicator">
+                      {sortConfig.direction === "asc" ? " ↑" : " ↓"}
+                    </span>
+                  )}
+                </th>
+              </tr>
+              <tr className="filter-row">
+                <td>
+                  <input
+                    type="text"
+                    placeholder="Filter by name..."
+                    value={filters.propertyName}
+                    onChange={(e) =>
+                      handleFilterChange("propertyName", e.target.value)
+                    }
+                    className="filter-input"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    placeholder="Filter by location..."
+                    value={filters.location}
+                    onChange={(e) =>
+                      handleFilterChange("location", e.target.value)
+                    }
+                    className="filter-input"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    placeholder="Filter by ID..."
+                    value={filters.propertyId}
+                    onChange={(e) =>
+                      handleFilterChange("propertyId", e.target.value)
+                    }
+                    className="filter-input"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    placeholder="Filter by rooms..."
+                    value={filters.totalRooms}
+                    onChange={(e) =>
+                      handleFilterChange("totalRooms", e.target.value)
+                    }
+                    className="filter-input"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    placeholder="Filter by check-ins..."
+                    value={filters.activeCheckins}
+                    onChange={(e) =>
+                      handleFilterChange("activeCheckins", e.target.value)
+                    }
+                    className="filter-input"
+                  />
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredData.map((property) => (
+                <tr key={property.id}>
+                  <td>
+                    <div className="property-name-cell">
+                      <span className="property-avatar">
+                        {property.propertyName.charAt(0)}
+                      </span>
+                      {property.propertyName}
+                    </div>
+                  </td>
+                  <td>{property.location}</td>
+                  <td>
+                    <span className="property-id">{property.propertyId}</span>
+                  </td>
+                  <td>
+                    <span className="rooms-count">{property.totalRooms}</span>
+                  </td>
+                  <td>
+                    <div className="checkins-cell">
+                      <span
+                        className={`checkins-badge ${
+                          property.activeCheckins > 50
+                            ? "high"
+                            : property.activeCheckins > 25
+                            ? "medium"
+                            : "low"
+                        }`}
+                      >
+                        {property.activeCheckins}
+                      </span>
+                      <div className="progress-bar">
+                        <div
+                          className="progress-fill"
+                          style={{
+                            width: `${
+                              (property.activeCheckins / property.totalRooms) *
+                              100
+                            }%`,
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {filteredData.length === 0 && (
+            <div className="no-data-message">
+              No properties found matching the current filters.
+            </div>
+          )}
+        </div>
+
+        <div className="table-footer">
+          <div className="table-info">
+            Showing {filteredData.length} of {initialTableData.length}{" "}
+            properties
+          </div>
+        </div>
+      </div>
 
       <div className="main-grid">
         <div className="widget-card wide">
           <Bar ref={chartRef} data={barChartData} options={barChartOptions} />
         </div>
-
-        {/* <div className="widget-card">
-          <h5>Live Incident Feed</h5>
-          <div className="incident-feed">
-            {incidents.map((incident, idx) => (
-              <div key={idx} className={`incident-item ${incident.type}`}>
-                <strong>{incident.time}</strong> — {incident.message}
-              </div>
-            ))}
-          </div>
-        </div> */}
-
-        {/* <div className="widget-card">
-          <h5>Pending Approvals</h5>
-          {pendingRequests.length === 0 ? (
-            <p className="no-requests">No pending approvals</p>
-          ) : (
-            <ul className="approval-list">
-              {pendingRequests.map((request, index) => (
-                <li key={index} className="approval-item">
-                  <div className="approval-info">
-                    <strong>{request.visitorName}</strong> — {request.purpose}
-                    <br />
-                    <small>{request.time}</small>
-                  </div>
-                  <div className="approval-actions">
-                    <button
-                      className="approve-btn"
-                      onClick={() => handleApprove(index)}
-                    >
-                      <span className="btn-icon">✔</span> Approve
-                    </button>
-                    <button
-                      className="reject-btn"
-                      onClick={() => handleReject(index)}
-                    >
-                      <span className="btn-icon">✖</span> Reject
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div> */}
       </div>
+
+      {/* Properties Table Section */}
     </div>
   );
 }
