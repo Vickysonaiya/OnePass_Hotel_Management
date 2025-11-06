@@ -1,15 +1,31 @@
 import React, { useState } from "react";
-import { Table, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { format } from "date-fns";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
-import * as XLSX from "xlsx";
 import "./AllGuestRecords.css";
-import { HiOutlineDownload } from "react-icons/hi";
 import DateHoursFilter from "../components/DateHoursFilter";
 import User1 from "../assets/images/User-1.jpg";
+import CommonTable from "../components/common/Table";
 
 const AllGuestRecords = () => {
+  const headers = [
+    "Check-in Date",
+    "Property",
+    "Reservation",
+    "Guest Name",
+    "Phone",
+    "Verification",
+    ""
+  ]
+const defaultColumns = [
+    { key: 'checkIn', label: 'Check-in Date' },
+    { key: 'hotel', label: 'Property' },
+    { key: 'reservation', label: 'Reservation' },
+    { key: 'name', label: 'Guest Name' },
+    { key: 'phone', label: 'Phone' },
+    { key: 'verification', label: 'Verification' },
+    { key: 'details', label: '' },
+  ];
+
   const [records] = useState([
     {
     reservation: "RES4001",
@@ -398,55 +414,12 @@ const AllGuestRecords = () => {
   };
 
   // Export CSV
-  const exportCSV = () => {
-    const worksheet = XLSX.utils.json_to_sheet(records);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "VerifiedGuests");
-    XLSX.writeFile(workbook, "verified_guest_records.xlsx");
-  };
-
-  // Export PDF
-  const exportPDF = () => {
-    const doc = new jsPDF();
-    doc.text("Verified Guest Check-In Records", 14, 16);
-    autoTable(doc, {
-      startY: 22,
-      head: [
-        [
-          "Hotel",
-          "Reservation Number",
-          "Guest Name",
-          "Phone Number",
-          "Verification Status",
-          "Face Match Result",
-          "Check-In Timestamp",
-          "Staff Name",
-        ],
-      ],
-      body: records.map((r) => [
-        r.hotel,
-        r.reservation,
-        r.name,
-        r.phone,
-        r.verification,
-        r.faceMatch,
-        r.checkIn,
-        r.staffName,
-      ]),
-    });
-    doc.save("verified_guest_records.pdf");
-  };
+ 
 
   // Mask phone number like +91-98XXX-XXX41
   const maskPhone = (phone) => {
     if (!phone) return "";
     return `+91-${phone.substring(0, 2)}XXX-XXX${phone.slice(-2)}`;
-  };
-
-  // Mask Aadhaar (for modal footer)
-  const getMaskedAadhaar = (guest) => {
-    const last4 = guest.phone.slice(-4);
-    return `XXXX XXXX ${last4}`;
   };
 
   return (
@@ -478,105 +451,13 @@ const AllGuestRecords = () => {
       </div>
 
       {/* Action filters + buttons */}
-      <div className="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+     
         <div>
-          <DateHoursFilter />
+          <DateHoursFilter records={records}/>
         </div>
-        <div className="d-flex gap-2">
-          <button className="pill-btn" onClick={exportCSV}>
-            <HiOutlineDownload size={18} /> Export Excel
-          </button>
-          <button className="pill-btn" onClick={exportPDF}>
-            <HiOutlineDownload size={18} /> Export PDF
-          </button>
-        </div>
-      </div>
 
       {/* Table */}
-      <div className="table-responsive custom-table-wrapper">
-        <Table hover className="guest-table align-middle">
-          <thead>
-            <tr>
-              <th>Check-in Date</th>
-              <th>Property</th>
-              <th>Reservation</th>
-              <th>Guest Name</th>
-              <th>Phone</th>
-              <th>Verification</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {records.map((r, i) => (
-              <tr key={i}>
-                {/* 1. Check-in date */}
-                <td>{format(new Date(r.checkIn), "d MMM yy, h:mm a")}</td>
-
-                {/* 2. Property */}
-                <td>
-                  <div className="fw-semibold">{r.hotel}</div>
-                  <small className="text-muted">{r.location}</small>
-                </td>
-
-                {/* 3. Reservation number */}
-                <td>{r.reservation}</td>
-
-                {/* 4. Guest Name */}
-                <td>{r.name}</td>
-
-                {/* 5. Phone (masked) */}
-                <td>{maskPhone(r.phone)}</td>
-
-                {/* 6. Verification status */}
-                <td>
-                  {r.verification === "Aadhaar" && r.faceMatch === "Match" ? (
-                    <span className="d-flex align-items-center gap-1">
-                      <span
-                        style={{
-                          display: "inline-block",
-                          width: 8,
-                          height: 8,
-                          borderRadius: "50%",
-                          backgroundColor: "green",
-                        }}
-                      ></span>
-                      Aadhaar + Face ID
-                    </span>
-                  ) : (
-                    <span className="d-flex align-items-center gap-1">
-                      <span
-                        style={{
-                          display: "inline-block",
-                          width: 8,
-                          height: 8,
-                          borderRadius: "50%",
-                          backgroundColor: "orange",
-                        }}
-                      ></span>
-                      Manual Verification
-                    </span>
-                  )}
-                </td>
-
-                {/* 7. Details link (row only, no header) */}
-                <td>
-                  <span
-                    style={{
-                      color: "#1976d2",
-                      cursor: "pointer",
-                      textDecoration: "none",
-                      fontSize: "14px",
-                    }}
-                    onClick={() => handleShowDetails(r)}
-                  >
-                    View Details
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </div>
+      <CommonTable headers={headers} records={records} handleShowDetails={handleShowDetails} maskPhone={maskPhone} defaultColumns={defaultColumns}/>
 
       {/* Modal */}
       <Modal

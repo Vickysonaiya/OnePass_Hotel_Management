@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   Box,
   Typography,
@@ -15,7 +15,10 @@ import { CalendarToday, ExpandMore } from "@mui/icons-material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider, DateCalendar } from "@mui/x-date-pickers";
 import { BiUndo } from "react-icons/bi";
-import testData from "../testData.json";
+import { HiOutlineDownload } from "react-icons/hi";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import * as XLSX from "xlsx";
 
 const formatDate = (date) => {
   if (!date) return "";
@@ -26,9 +29,7 @@ const formatDate = (date) => {
   return `${day}/${month}/${year}`;
 };
 
-const mockData = testData;
-
-const EvidenceFilter = () => {
+const EvidenceFilter = ({records}) => {
   const [filter, setFilter] = useState("is after");
   const [date, setDate] = useState(null);
   const [startDate, setStartDate] = useState(null);
@@ -42,7 +43,6 @@ const EvidenceFilter = () => {
 
   const [lastValue, setLastValue] = useState("");
   const [lastUnit, setLastUnit] = useState("days");
-  const [filteredData, setFilteredData] = useState([]);
 
   // Autofocus refs
   const singleDateRef = useRef(null);
@@ -98,6 +98,13 @@ const EvidenceFilter = () => {
     }
   }, [filter]);
 
+  const handleDateFieldInteraction = useCallback((field, value) => {
+    if (!filterVisible || filter === "is in the last") return;
+    setActiveField(field);
+    setTempDate(value);
+    setOpenCalendar(true);
+  }, [filterVisible, filter]);
+
   useEffect(() => {
     if (filterVisible) {
       const timeout = setTimeout(() => {
@@ -111,7 +118,7 @@ const EvidenceFilter = () => {
       }, 50);
       return () => clearTimeout(timeout);
     }
-  }, [filterVisible, filter]);
+  }, [filterVisible, filter, date, startDate, handleDateFieldInteraction]);
 
   const handleAccept = (newValue) => {
     if (filter === "is between") {
@@ -132,62 +139,53 @@ const EvidenceFilter = () => {
     }
   };
 
-  const handleDateFieldInteraction = (field, value) => {
-    if (!filterVisible || filter === "is in the last") return;
-    setActiveField(field);
-    setTempDate(value);
-    setOpenCalendar(true);
-  };
+ 
 
   const applyFilter = () => {
-    const now = new Date();
-    const results = mockData.filter((item) => {
-      const itemDate = new Date(item.evidenceDueBy);
-
-      switch (filter) {
-        case "is equal to":
-          return itemDate.toDateString() === new Date(date).toDateString();
-
-        case "is after":
-          return itemDate > new Date(date);
-
-        case "is on or after":
-          return itemDate >= new Date(date);
-
-        case "is before or on":
-          return (
-            itemDate.setHours(0, 0, 0, 0) <=
-            new Date(date).setHours(23, 59, 59, 999)
-          );
-
-        case "is between":
-          return (
-            itemDate >= new Date(startDate).setHours(0, 0, 0, 0) &&
-            itemDate <= new Date(endDate).setHours(23, 59, 59, 999)
-          );
-
-        case "is in the last":
-          const amount = parseInt(lastValue, 10) || 0;
-          const fromDate = new Date();
-          if (lastUnit === "days")
-            fromDate.setDate(fromDate.getDate() - amount);
-          if (lastUnit === "months")
-            fromDate.setMonth(fromDate.getMonth() - amount);
-          if (lastUnit === "hours")
-            fromDate.setHours(fromDate.getHours() - amount);
-          return itemDate >= fromDate && itemDate <= now;
-
-        default:
-          return true;
-      }
-    });
-
-    setFilteredData(results);
     setFilterVisible(false);
     setOpenCalendar(false);
   };
+ const exportCSV = () => {
+    const worksheet = XLSX.utils.json_to_sheet(records);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "VerifiedGuests");
+    XLSX.writeFile(workbook, "verified_guest_records.xlsx");
+  };
 
+  // Export PDF
+  const exportPDF = () => {
+    const doc = new jsPDF();
+    doc.text("Verified Guest Check-In Records", 14, 16);
+    autoTable(doc, {
+      startY: 22,
+      head: [
+        [
+          "Hotel",
+          "Reservation Number",
+          "Guest Name",
+          "Phone Number",
+          "Verification Status",
+          "Face Match Result",
+          "Check-In Timestamp",
+          "Staff Name",
+        ],
+      ],
+      body: records.map((r) => [
+        r.hotel,
+        r.reservation,
+        r.name,
+        r.phone,
+        r.verification,
+        r.faceMatch,
+        r.checkIn,
+        r.staffName,
+      ]),
+    });
+    doc.save("verified_guest_records.pdf");
+  };
   return (
+    <>
+     <div className="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Box sx={{ p: 0, width: 330, fontFamily: systemFont }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -529,6 +527,16 @@ const EvidenceFilter = () => {
         </Box>
       </Box>
     </LocalizationProvider>
+    <div className="d-flex gap-2">
+                          <button className="pill-btn" onClick={exportCSV}>
+                            <HiOutlineDownload size={18} /> Export Excel
+                          </button>
+                          <button className="pill-btn" onClick={exportPDF}>
+                            <HiOutlineDownload size={18} /> Export PDF
+                          </button>
+                        </div>
+                        </div>
+                        </>
   );
 };
 
