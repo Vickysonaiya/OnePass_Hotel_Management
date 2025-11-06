@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   Box,
   Typography,
@@ -98,6 +98,13 @@ const EvidenceFilter = ({records}) => {
     }
   }, [filter]);
 
+  const handleDateFieldInteraction = useCallback((field, value) => {
+    if (!filterVisible || filter === "is in the last") return;
+    setActiveField(field);
+    setTempDate(value);
+    setOpenCalendar(true);
+  }, [filterVisible, filter]);
+
   useEffect(() => {
     if (filterVisible) {
       const timeout = setTimeout(() => {
@@ -111,7 +118,7 @@ const EvidenceFilter = ({records}) => {
       }, 50);
       return () => clearTimeout(timeout);
     }
-  }, [filterVisible, filter]);
+  }, [filterVisible, filter, date, startDate, handleDateFieldInteraction]);
 
   const handleAccept = (newValue) => {
     if (filter === "is between") {
@@ -132,12 +139,7 @@ const EvidenceFilter = ({records}) => {
     }
   };
 
-  const handleDateFieldInteraction = (field, value) => {
-    if (!filterVisible || filter === "is in the last") return;
-    setActiveField(field);
-    setTempDate(value);
-    setOpenCalendar(true);
-  };
+ 
 
   const applyFilter = () => {
     setFilterVisible(false);
