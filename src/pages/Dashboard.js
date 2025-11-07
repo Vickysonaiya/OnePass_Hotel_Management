@@ -90,45 +90,33 @@ export default function Dashboard() {
       </header>
 
       <div className="kpi-grid">
-  {kpis.map((kpi, index) => (
-    <div key={index} className="kpi-card">
-      <div className="kpi-header">
-        <h5>{kpi.title}</h5>
-        <button className="kpi-action">View more</button>
-      </div>
-      <div className="kpi-body">
-        <div className="kpi-value">${kpi.value.toFixed ? kpi.value.toFixed(2) : kpi.value}</div>
-        <div className="kpi-subtext">$0.00 previous period</div>
-        <div className="kpi-chart-line"></div>
-        <div className="kpi-footer">Updated 1:37 PM</div>
-      </div>
-    </div>
-  ))}
-</div>
-
-      {/* Properties Overview Table */}
-      <div className="table-section">
-        <div className="table-header">
-          <h3>Properties Overview</h3>
-        </div>
-
-        <div>
-          <DateHoursFilter />
-        </div>
-        {/* CommonTable Component */}
-        <CommonTable
-          headers={headers}
-          records={filteredData}
-          defaultColumns={defaultColumns}
-        />
-
-        <div className="table-footer">
-          <div className="table-info">
-            Showing {filteredData.length} of {initialTableData.length}{" "}
-            properties
+        {kpis.map((kpi, index) => (
+          <div key={index} className="kpi-card">
+            <div className="kpi-header">
+              <h5>{kpi.title}</h5>
+              <button className="kpi-action">View more</button>
+            </div>
+            <div className="kpi-body">
+              <div className="kpi-value">
+                ${kpi.value.toFixed ? kpi.value.toFixed(2) : kpi.value}
+              </div>
+              <div className="kpi-subtext">$0.00 previous period</div>
+              <div className="kpi-chart-line"></div>
+              <div className="kpi-footer">Updated 1:37 PM</div>
+            </div>
           </div>
-        </div>
+        ))}
       </div>
+
+      <div>
+        <DateHoursFilter />
+      </div>
+      {/* CommonTable Component */}
+      <CommonTable
+        headers={headers}
+        records={filteredData}
+        defaultColumns={defaultColumns}
+      />
     </div>
   );
 }

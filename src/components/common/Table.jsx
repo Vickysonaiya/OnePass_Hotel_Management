@@ -1,9 +1,15 @@
-import React from 'react'
+import React from "react";
 import { Table } from "react-bootstrap";
 import { format } from "date-fns";
 
-const CommonTable = ({ columns, headers = [], records = [], handleShowDetails, maskPhone,defaultColumns }) => {
-
+const CommonTable = ({
+  columns,
+  headers = [],
+  records = [],
+  handleShowDetails,
+  maskPhone,
+  defaultColumns,
+}) => {
   // Build effective columns: priority -> columns prop, else attempt to build from headers, else defaultColumns
   let effectiveColumns = columns && columns.length ? columns : null;
   if (!effectiveColumns) {
@@ -11,7 +17,10 @@ const CommonTable = ({ columns, headers = [], records = [], handleShowDetails, m
       // try to align headers with default keys by position
       effectiveColumns = headers.map((h, idx) => {
         const def = defaultColumns[idx];
-        return { key: def ? def.key : h.toLowerCase().replace(/\s+/g, ''), label: h };
+        return {
+          key: def ? def.key : h.toLowerCase().replace(/\s+/g, ""),
+          label: h,
+        };
       });
     } else {
       effectiveColumns = defaultColumns;
@@ -23,11 +32,16 @@ const CommonTable = ({ columns, headers = [], records = [], handleShowDetails, m
 
     const key = col.key;
     // details pseudo-key
-    if (key === 'details') {
-      if (!handleShowDetails) return '';
+    if (key === "details") {
+      if (!handleShowDetails) return "";
       return (
         <span
-          style={{ color: '#1976d2', cursor: 'pointer', textDecoration: 'none', fontSize: 14 }}
+          style={{
+            color: "#1976d2",
+            cursor: "pointer",
+            textDecoration: "none",
+            fontSize: 14,
+          }}
           onClick={() => handleShowDetails(record)}
         >
           View Details
@@ -43,37 +57,58 @@ const CommonTable = ({ columns, headers = [], records = [], handleShowDetails, m
       val = record[alt];
     }
 
-    if (val === undefined || val === null) return '';
+    if (val === undefined || val === null) return "";
 
     const lowerKey = key.toLowerCase();
     // Date formatting heuristics
-    if (lowerKey.includes('check') || lowerKey.includes('date') || val instanceof Date) {
+    if (
+      lowerKey.includes("check") ||
+      lowerKey.includes("date") ||
+      val instanceof Date
+    ) {
       try {
         const d = new Date(val);
-        if (!isNaN(d)) return format(d, 'd MMM yy, h:mm a');
+        if (!isNaN(d)) return format(d, "d MMM yy, h:mm a");
       } catch (e) {
         // fallthrough
       }
     }
 
     // Phone masking
-    if (lowerKey.includes('phone') && maskPhone) return maskPhone(val);
+    if (lowerKey.includes("phone") && maskPhone) return maskPhone(val);
 
     // Verification display: emulate existing badge logic
-    if (lowerKey === 'verification' || lowerKey.includes('verify')) {
-      const verification = record.verification || record.verificationType || '';
-      const faceMatch = record.faceMatch || record.faceID || record.faceMatchStatus;
-      if (verification === 'Aadhaar' && faceMatch === 'Match') {
+    if (lowerKey === "verification" || lowerKey.includes("verify")) {
+      const verification = record.verification || record.verificationType || "";
+      const faceMatch =
+        record.faceMatch || record.faceID || record.faceMatchStatus;
+      if (verification === "Aadhaar" && faceMatch === "Match") {
         return (
           <span className="d-flex align-items-center gap-1">
-            <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', backgroundColor: 'green' }} />
+            <span
+              style={{
+                display: "inline-block",
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                backgroundColor: "green",
+              }}
+            />
             Aadhaar + Face ID
           </span>
         );
       }
       return (
         <span className="d-flex align-items-center gap-1">
-          <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', backgroundColor: 'orange' }} />
+          <span
+            style={{
+              display: "inline-block",
+              width: 8,
+              height: 8,
+              borderRadius: "50%",
+              backgroundColor: "orange",
+            }}
+          />
           Manual Verification
         </span>
       );
@@ -90,7 +125,7 @@ const CommonTable = ({ columns, headers = [], records = [], handleShowDetails, m
           <thead>
             <tr>
               {effectiveColumns.map((col, idx) => (
-                <th key={idx}>{col.label || ''}</th>
+                <th key={idx}>{col.label || ""}</th>
               ))}
             </tr>
           </thead>
@@ -107,6 +142,6 @@ const CommonTable = ({ columns, headers = [], records = [], handleShowDetails, m
       </div>
     </div>
   );
-}
+};
 
-export default CommonTable
+export default CommonTable;
