@@ -29,7 +29,7 @@ const formatDate = (date) => {
   return `${day}/${month}/${year}`;
 };
 
-const EvidenceFilter = ({records}) => {
+const EvidenceFilter = ({ records }) => {
   const [filter, setFilter] = useState("is after");
   const [date, setDate] = useState(null);
   const [startDate, setStartDate] = useState(null);
@@ -98,12 +98,15 @@ const EvidenceFilter = ({records}) => {
     }
   }, [filter]);
 
-  const handleDateFieldInteraction = useCallback((field, value) => {
-    if (!filterVisible || filter === "is in the last") return;
-    setActiveField(field);
-    setTempDate(value);
-    setOpenCalendar(true);
-  }, [filterVisible, filter]);
+  const handleDateFieldInteraction = useCallback(
+    (field, value) => {
+      if (!filterVisible || filter === "is in the last") return;
+      setActiveField(field);
+      setTempDate(value);
+      setOpenCalendar(true);
+    },
+    [filterVisible, filter]
+  );
 
   useEffect(() => {
     if (filterVisible) {
@@ -139,13 +142,11 @@ const EvidenceFilter = ({records}) => {
     }
   };
 
- 
-
   const applyFilter = () => {
     setFilterVisible(false);
     setOpenCalendar(false);
   };
- const exportCSV = () => {
+  const exportCSV = () => {
     const worksheet = XLSX.utils.json_to_sheet(records);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "VerifiedGuests");
@@ -185,358 +186,368 @@ const EvidenceFilter = ({records}) => {
   };
   return (
     <>
-     <div className="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Box sx={{ p: 0, width: 330, fontFamily: systemFont }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          {/* 🔹 Relative wrapper for button + popup */}
-          <Box sx={{ position: "relative", display: "inline-block" }}>
-            <Box ref={toggleButtonRef} sx={{ fontFamily: systemFont }}>
-              <Button
-                onClick={() => {
-                  setFilterVisible((prev) => {
-                    const newValue = !prev;
-                    if (!newValue) setOpenCalendar(false);
-                    return newValue;
-                  });
-                }}
-                variant="outlined"
-                sx={{
-                  fontFamily: systemFont,
-                  borderRadius: "30px",
-                  textTransform: "none",
-                  paddingY: "6px",
-                  paddingX: "12px",
-                  borderColor: "#ccc",
-                  backgroundColor: "#f8f8f8",
-                  fontSize: "12px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  maxWidth: "100%",
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: "12px",
-                    color: "#444",
-                    fontFamily: systemFont,
-                  }}
-                >
-                  ✕ Evidence due by
-                </span>
-                <span
-                  title={getFilterLabel()}
-                  style={{
-                    fontFamily: systemFont,
-                    fontWeight: 600,
-                    color: "#333",
-                    maxWidth: "160px",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                    display: "inline-block",
-                  }}
-                >
-                  | {getFilterLabel()}
-                </span>
-                <ExpandMore sx={{ fontSize: 18, fontWeight: "600" }} />
-              </Button>
-            </Box>
-
-            {filterVisible && (
-              <ClickAwayListener
-                mouseEvent="onMouseDown"
-                onClickAway={(event) => {
-                  const isInsidePopover =
-                    !!event?.target?.closest(".MuiPopover-root");
-                  const isInsidePanel = !!event?.target?.closest(
-                    "#evidence-filter-panel"
-                  );
-                  const isInsideButton = toggleButtonRef.current?.contains(
-                    event.target
-                  );
-
-                  if (!isInsidePopover && !isInsidePanel && !isInsideButton) {
-                    setFilterVisible(false);
-                    setOpenCalendar(false);
-                  }
-                }}
-              >
-                <Box
-                  id="evidence-filter-panel"
-                  sx={{
-                    fontFamily: systemFont,
-                    position: "absolute",
-                    top: "calc(100% + 8px)",
-                    left: 0,
-                    zIndex: 1300,
-                    p: 2,
-                    borderRadius: 2,
-                    boxShadow: 3,
-                    backgroundColor: "#fff",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 2,
-                    minWidth: "300px", // ✅ Added minimum width
-                  }}
-                >
-                  <Typography
-                    variant="subtitle1"
-                    fontSize={14}
-                    fontWeight="600"
-                    sx={{ fontFamily: systemFont }}
-                  >
-                    Filter by Evidence due by
-                  </Typography>
-
-                  <FormControl fullWidth size="small">
-                    <Select
-                      value={filter}
-                      onChange={(e) => setFilter(e.target.value)}
-                      variant="outlined"
-                      displayEmpty
-                      sx={{
-                        ".MuiOutlinedInput-notchedOutline": {
-                          border: "1px solid #ccc",
-                        },
-                        height: 40,
-                        fontSize: "14px",
-                        fontWeight: 600,
-                      }}
-                    >
-                      <MenuItem value="is in the last">is in the last</MenuItem>
-                      <MenuItem value="is equal to">is equal to</MenuItem>
-                      <MenuItem value="is between">is between</MenuItem>
-                      <MenuItem value="is on or after">is on or after</MenuItem>
-                      <MenuItem value="is before or on">
-                        is before or on
-                      </MenuItem>
-                      <MenuItem value="is after">is after</MenuItem>
-                    </Select>
-                  </FormControl>
-
-                  {filter === "is in the last" ? (
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                      <BiUndo
-                        size={25}
-                        color="#2D9CDB"
-                        style={{ transform: "scaleX(1) rotate(180deg)" }}
-                      />
-                      <TextField
-                        inputMode="numeric"
-                        value={lastValue}
-                        onChange={(e) => setLastValue(e.target.value)}
-                        variant="outlined"
-                        size="small"
-                        sx={{ width: "100px", fontFamily: systemFont }}
-                      />
-                      <FormControl size="small" sx={{ width: "100px" }}>
-                        <Select
-                          value={lastUnit}
-                          onChange={(e) => setLastUnit(e.target.value)}
-                          displayEmpty
-                          variant="outlined"
-                          sx={{ height: 40, fontFamily: systemFont }}
-                        >
-                          <MenuItem value="hours">hours</MenuItem>
-                          <MenuItem value="days">days</MenuItem>
-                          <MenuItem value="months">months</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Box>
-                  ) : filter === "is between" ? (
-                    <Box
-                      className="calendar-input"
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 1,
-                      }}
-                    >
-                      <BiUndo
-                        size={25}
-                        color="#2D9CDB"
-                        style={{ transform: "scaleX(1) rotate(180deg)" }}
-                      />
-                      <CalendarToday
-                        sx={{
-                          color: "gray",
-                          fontSize: 20,
-                          fontFamily: systemFont,
-                        }}
-                      />
-                      <TextField
-                        id="start-date-input"
-                        size="small"
-                        value={formatDate(startDate)}
-                        inputRef={startDateRef}
-                        onFocus={() =>
-                          handleDateFieldInteraction("start", startDate)
-                        }
-                        onClick={() =>
-                          handleDateFieldInteraction("start", startDate)
-                        }
-                        autoComplete="off"
-                        InputProps={{ sx: { height: 40 } }}
-                        sx={{
-                          width: "120px",
-                          "& fieldset": { borderColor: "#ccc" },
-                          fontFamily: systemFont,
-                          fontSize: "14px !important",
-                          fontWeight: 600,
-                        }}
-                      />
-
-                      <Typography
-                        sx={{
-                          fontSize: "14px !important",
-                          fontWeight: 600,
-                          color: "#666",
-                          fontFamily: systemFont,
-                        }}
-                      >
-                        and
-                      </Typography>
-
-                      <TextField
-                        id="end-date-input"
-                        size="small"
-                        value={formatDate(endDate)}
-                        inputRef={endDateRef}
-                        onFocus={() =>
-                          handleDateFieldInteraction("end", endDate)
-                        }
-                        onClick={() =>
-                          handleDateFieldInteraction("end", endDate)
-                        }
-                        autoComplete="off"
-                        InputProps={{ sx: { height: 40 } }}
-                        sx={{
-                          width: "120px",
-                          "& fieldset": { borderColor: "#ccc" },
-                          fontFamily: systemFont,
-                          fontSize: "14px !important",
-                          fontWeight: 600,
-                        }}
-                      />
-                    </Box>
-                  ) : (
-                    <Box
-                      className="calendar-input"
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 1,
-                        fontSize: "14px !important",
-                        fontFamily: systemFont,
-                        fontWeight: 600,
-                      }}
-                    >
-                      <BiUndo
-                        size={25}
-                        color="#1B3631"
-                        style={{ transform: "scaleX(1) rotate(180deg)" }}
-                      />
-                      <CalendarToday
-                        sx={{
-                          color: "gray",
-                          fontSize: 14,
-                          fontWeight: 500,
-                          fontFamily: systemFont,
-                        }}
-                      />
-                      <TextField
-                        size="small"
-                        inputRef={singleDateRef}
-                        value={formatDate(date)}
-                        onFocus={() =>
-                          handleDateFieldInteraction("single", date)
-                        }
-                        onClick={() =>
-                          handleDateFieldInteraction("single", date)
-                        }
-                        autoComplete="off"
-                        InputProps={{
-                          sx: {
-                            height: 40,
-                            "& input": {
-                              fontSize: "14px", // ✅ applies font size to input text
-                              fontWeight: 400,
-                            },
-                          },
-                        }}
-                        sx={{
-                          width: "120px",
-                          "& fieldset": { borderColor: "#ccc" },
-                          fontSize: "14px !important",
-                          fontWeight: 600,
-                        }}
-                      />
-                    </Box>
-                  )}
-
-                  <Popper
-                    open={openCalendar}
-                    anchorEl={getAnchorEl()}
-                    placement="bottom-start"
-                    style={{ zIndex: 1300 }}
-                  >
-                    <Paper elevation={3}>
-                      <DateCalendar
-                        value={tempDate}
-                        onChange={(newValue) => {
-                          setTempDate(newValue);
-                          handleAccept(newValue);
-                          setOpenCalendar(false); // ✅ auto-close when date is picked
-                        }}
-                        sx={{
-                          "& .MuiTypography-root": {
-                            fontFamily: `system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`,
-                            fontSize: "14px",
-                          },
-                          "& .MuiPickersDay-root": {
-                            fontSize: "14px", // dates inside the calendar
-                            fontFamily: `system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`,
-                          },
-                        }}
-                      />
-                    </Paper>
-                  </Popper>
-
+      <div className="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <Box sx={{ p: 0, width: 330, fontFamily: systemFont }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+              {/* 🔹 Relative wrapper for button + popup */}
+              <Box sx={{ position: "relative", display: "inline-block" }}>
+                <Box ref={toggleButtonRef} sx={{ fontFamily: systemFont }}>
                   <Button
-                    variant="contained"
-                    onClick={applyFilter}
+                    onClick={() => {
+                      setFilterVisible((prev) => {
+                        const newValue = !prev;
+                        if (!newValue) setOpenCalendar(false);
+                        return newValue;
+                      });
+                    }}
+                    variant="outlined"
                     sx={{
+                      fontFamily: systemFont,
+                      borderRadius: "30px",
                       textTransform: "none",
-                      backgroundColor: "#1B3631",
-                      height: 40,
-                      "&:hover": {
-                        backgroundColor: "#1B3631",
-                        fontWeight: 600,
-                        fontSize: "14px !important",
-                      },
+                      paddingY: "6px",
+                      paddingX: "12px",
+                      borderColor: "#ccc",
+                      backgroundColor: "#f8f8f8",
+                      fontSize: "12px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      maxWidth: "100%",
                     }}
                   >
-                    Apply
+                    <span
+                      style={{
+                        fontSize: "12px",
+                        color: "#444",
+                        fontFamily: systemFont,
+                      }}
+                    >
+                      ✕ Evidence due by
+                    </span>
+                    <span
+                      title={getFilterLabel()}
+                      style={{
+                        fontFamily: systemFont,
+                        fontWeight: 600,
+                        color: "#333",
+                        maxWidth: "160px",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                        display: "inline-block",
+                      }}
+                    >
+                      | {getFilterLabel()}
+                    </span>
+                    <ExpandMore sx={{ fontSize: 18, fontWeight: "600" }} />
                   </Button>
                 </Box>
-              </ClickAwayListener>
-            )}
+
+                {filterVisible && (
+                  <ClickAwayListener
+                    mouseEvent="onMouseDown"
+                    onClickAway={(event) => {
+                      const isInsidePopover =
+                        !!event?.target?.closest(".MuiPopover-root");
+                      const isInsidePanel = !!event?.target?.closest(
+                        "#evidence-filter-panel"
+                      );
+                      const isInsideButton = toggleButtonRef.current?.contains(
+                        event.target
+                      );
+
+                      if (
+                        !isInsidePopover &&
+                        !isInsidePanel &&
+                        !isInsideButton
+                      ) {
+                        setFilterVisible(false);
+                        setOpenCalendar(false);
+                      }
+                    }}
+                  >
+                    <Box
+                      id="evidence-filter-panel"
+                      sx={{
+                        fontFamily: systemFont,
+                        position: "absolute",
+                        top: "calc(100% + 8px)",
+                        left: 0,
+                        zIndex: 1300,
+                        p: 2,
+                        borderRadius: 2,
+                        boxShadow: 3,
+                        backgroundColor: "#fff",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 2,
+                        minWidth: "300px", // ✅ Added minimum width
+                      }}
+                    >
+                      <Typography
+                        variant="subtitle1"
+                        fontSize={14}
+                        fontWeight="600"
+                        sx={{ fontFamily: systemFont }}
+                      >
+                        Filter by Evidence due by
+                      </Typography>
+
+                      <FormControl fullWidth size="small">
+                        <Select
+                          value={filter}
+                          onChange={(e) => setFilter(e.target.value)}
+                          variant="outlined"
+                          displayEmpty
+                          sx={{
+                            ".MuiOutlinedInput-notchedOutline": {
+                              border: "1px solid #ccc",
+                            },
+                            height: 40,
+                            fontSize: "14px",
+                            fontWeight: 600,
+                          }}
+                        >
+                          <MenuItem value="is in the last">
+                            is in the last
+                          </MenuItem>
+                          <MenuItem value="is equal to">is equal to</MenuItem>
+                          <MenuItem value="is between">is between</MenuItem>
+                          <MenuItem value="is on or after">
+                            is on or after
+                          </MenuItem>
+                          <MenuItem value="is before or on">
+                            is before or on
+                          </MenuItem>
+                          <MenuItem value="is after">is after</MenuItem>
+                        </Select>
+                      </FormControl>
+
+                      {filter === "is in the last" ? (
+                        <Box
+                          sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                        >
+                          <BiUndo
+                            size={25}
+                            color="#2D9CDB"
+                            style={{ transform: "scaleX(1) rotate(180deg)" }}
+                          />
+                          <TextField
+                            inputMode="numeric"
+                            value={lastValue}
+                            onChange={(e) => setLastValue(e.target.value)}
+                            variant="outlined"
+                            size="small"
+                            sx={{ width: "100px", fontFamily: systemFont }}
+                          />
+                          <FormControl size="small" sx={{ width: "100px" }}>
+                            <Select
+                              value={lastUnit}
+                              onChange={(e) => setLastUnit(e.target.value)}
+                              displayEmpty
+                              variant="outlined"
+                              sx={{ height: 40, fontFamily: systemFont }}
+                            >
+                              <MenuItem value="hours">hours</MenuItem>
+                              <MenuItem value="days">days</MenuItem>
+                              <MenuItem value="months">months</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </Box>
+                      ) : filter === "is between" ? (
+                        <Box
+                          className="calendar-input"
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                          }}
+                        >
+                          <BiUndo
+                            size={25}
+                            color="#2D9CDB"
+                            style={{ transform: "scaleX(1) rotate(180deg)" }}
+                          />
+                          <CalendarToday
+                            sx={{
+                              color: "gray",
+                              fontSize: 20,
+                              fontFamily: systemFont,
+                            }}
+                          />
+                          <TextField
+                            id="start-date-input"
+                            size="small"
+                            value={formatDate(startDate)}
+                            inputRef={startDateRef}
+                            onFocus={() =>
+                              handleDateFieldInteraction("start", startDate)
+                            }
+                            onClick={() =>
+                              handleDateFieldInteraction("start", startDate)
+                            }
+                            autoComplete="off"
+                            InputProps={{ sx: { height: 40 } }}
+                            sx={{
+                              width: "120px",
+                              "& fieldset": { borderColor: "#ccc" },
+                              fontFamily: systemFont,
+                              fontSize: "14px !important",
+                              fontWeight: 600,
+                            }}
+                          />
+
+                          <Typography
+                            sx={{
+                              fontSize: "14px !important",
+                              fontWeight: 600,
+                              color: "#666",
+                              fontFamily: systemFont,
+                            }}
+                          >
+                            and
+                          </Typography>
+
+                          <TextField
+                            id="end-date-input"
+                            size="small"
+                            value={formatDate(endDate)}
+                            inputRef={endDateRef}
+                            onFocus={() =>
+                              handleDateFieldInteraction("end", endDate)
+                            }
+                            onClick={() =>
+                              handleDateFieldInteraction("end", endDate)
+                            }
+                            autoComplete="off"
+                            InputProps={{ sx: { height: 40 } }}
+                            sx={{
+                              width: "120px",
+                              "& fieldset": { borderColor: "#ccc" },
+                              fontFamily: systemFont,
+                              fontSize: "14px !important",
+                              fontWeight: 600,
+                            }}
+                          />
+                        </Box>
+                      ) : (
+                        <Box
+                          className="calendar-input"
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                            fontSize: "14px !important",
+                            fontFamily: systemFont,
+                            fontWeight: 600,
+                          }}
+                        >
+                          <BiUndo
+                            size={25}
+                            color="#1B3631"
+                            style={{ transform: "scaleX(1) rotate(180deg)" }}
+                          />
+                          <CalendarToday
+                            sx={{
+                              color: "gray",
+                              fontSize: 14,
+                              fontWeight: 500,
+                              fontFamily: systemFont,
+                            }}
+                          />
+                          <TextField
+                            size="small"
+                            inputRef={singleDateRef}
+                            value={formatDate(date)}
+                            onFocus={() =>
+                              handleDateFieldInteraction("single", date)
+                            }
+                            onClick={() =>
+                              handleDateFieldInteraction("single", date)
+                            }
+                            autoComplete="off"
+                            InputProps={{
+                              sx: {
+                                height: 40,
+                                "& input": {
+                                  fontSize: "14px", // ✅ applies font size to input text
+                                  fontWeight: 400,
+                                },
+                              },
+                            }}
+                            sx={{
+                              width: "120px",
+                              "& fieldset": { borderColor: "#ccc" },
+                              fontSize: "14px !important",
+                              fontWeight: 600,
+                            }}
+                          />
+                        </Box>
+                      )}
+
+                      <Popper
+                        open={openCalendar}
+                        anchorEl={getAnchorEl()}
+                        placement="bottom-start"
+                        style={{ zIndex: 1300 }}
+                      >
+                        <Paper elevation={3}>
+                          <DateCalendar
+                            value={tempDate}
+                            onChange={(newValue) => {
+                              setTempDate(newValue);
+                              handleAccept(newValue);
+                              setOpenCalendar(false); // ✅ auto-close when date is picked
+                            }}
+                            sx={{
+                              "& .MuiTypography-root": {
+                                fontFamily: `system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`,
+                                fontSize: "14px",
+                              },
+                              "& .MuiPickersDay-root": {
+                                fontSize: "14px", // dates inside the calendar
+                                fontFamily: `system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`,
+                              },
+                            }}
+                          />
+                        </Paper>
+                      </Popper>
+
+                      <Button
+                        variant="contained"
+                        onClick={applyFilter}
+                        sx={{
+                          textTransform: "none",
+                          backgroundColor: "#1B3631",
+                          height: 40,
+                          "&:hover": {
+                            backgroundColor: "#1B3631",
+                            fontWeight: 600,
+                            fontSize: "14px !important",
+                          },
+                        }}
+                      >
+                        Apply
+                      </Button>
+                    </Box>
+                  </ClickAwayListener>
+                )}
+              </Box>
+            </Box>
           </Box>
-        </Box>
-      </Box>
-    </LocalizationProvider>
-    <div className="d-flex gap-2">
-                          <button className="pill-btn" onClick={exportCSV}>
-                            <HiOutlineDownload size={18} /> Export Excel
-                          </button>
-                          <button className="pill-btn" onClick={exportPDF}>
-                            <HiOutlineDownload size={18} /> Export PDF
-                          </button>
-                        </div>
-                        </div>
-                        </>
+        </LocalizationProvider>
+        <div className="d-flex gap-2">
+          <button className="pill-btn" onClick={exportCSV}>
+            <HiOutlineDownload size={18} /> Export Excel
+          </button>
+          <button className="pill-btn" onClick={exportPDF}>
+            <HiOutlineDownload size={18} /> Export PDF
+          </button>
+        </div>
+      </div>
+    </>
   );
 };
 
