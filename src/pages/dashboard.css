@@ -449,3 +449,111 @@
     width: 100%;
   }
 }
+
+.dashboard-page {
+  padding: 24px;
+  background-color: #f8f9fc;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.dashboard-header {
+  margin-bottom: 24px;
+}
+
+.dashboard-header h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1a1f36;
+}
+
+/* KPI Grid */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* KPI Card */
+.kpi-card {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px 20px;
+  transition: all 0.2s ease-in-out;
+  height: 200px!important
+}
+
+.kpi-card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.07);
+}
+
+/* Header */
+.kpi-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.kpi-header h5 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1f36;
+}
+
+.kpi-action {
+  background: none;
+  border: none;
+  color: #635bff;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.kpi-action:hover {
+  text-decoration: underline;
+}
+
+/* Body */
+.kpi-body {
+  padding-top: 4px;
+}
+
+.kpi-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1f36;
+}
+
+.kpi-subtext {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.kpi-chart-line {
+  height: 2px;
+  background: linear-gradient(to right, #8b5cf6, #6366f1);
+  border-radius: 2px;
+  margin: 12px 0;
+}
+
+.kpi-footer {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* Table Section */
+.table-section {
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}

@@ -87,16 +87,21 @@ const BillingHistory = () => {
 
       {/* Billing Summary KPI Cards */}
       <div className="kpi-grid">
-        {billingKPIs.map((kpi, index) => (
-          <div key={index} className={`kpi-card ${kpi.color}`}>
-            <div className="kpi-content">
-              <h5>{kpi.title}</h5>
-              <span className="kpi-value">{kpi.value}</span>
-              <p className="kpi-description">{kpi.description}</p>
-            </div>
-          </div>
-        ))}
+  {billingKPIs.map((kpi, index) => (
+    <div key={index} className="kpi-card">
+      <div className="kpi-header">
+        <h5>{kpi.title}</h5>
+        <button className="kpi-action">View more</button>
       </div>
+      <div className="kpi-body">
+        <div className="kpi-value">${kpi.value.toFixed ? kpi.value.toFixed(2) : kpi.value}</div>
+        <div className="kpi-subtext">$0.00 previous period</div>
+        <div className="kpi-chart-line"></div>
+        <div className="kpi-footer">Updated 1:37 PM</div>
+      </div>
+    </div>
+  ))}
+</div>
 
       {/* Date Filter */}
       <div>
