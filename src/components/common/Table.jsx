@@ -2,18 +2,7 @@ import React from 'react'
 import { Table } from "react-bootstrap";
 import { format } from "date-fns";
 
-/**
- * CommonTable
- * Props:
- * - columns: optional array [{ key, label, render?(record) }]
- * - headers: legacy; if columns not provided, headers are used as labels and matched to default keys
- * - records: array of record objects
- * - handleShowDetails: function(record) to show details (optional)
- * - maskPhone: function to mask phone numbers (optional)
- */
 const CommonTable = ({ columns, headers = [], records = [], handleShowDetails, maskPhone,defaultColumns }) => {
-console.log("Default Columns in Table:",records);
-  // Default column mapping (used when no columns prop supplied)
 
   // Build effective columns: priority -> columns prop, else attempt to build from headers, else defaultColumns
   let effectiveColumns = columns && columns.length ? columns : null;
