@@ -108,7 +108,6 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* Properties Overview Table */}
       <div>
         <DateHoursFilter />
       </div>
