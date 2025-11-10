@@ -298,3 +298,68 @@
     width: 100%;
   }
 }
+
+/* The TD and wrapper establish a sane containing block for absolute dropdowns */
+.guest-table td { 
+  position: relative; 
+  overflow: visible !important; 
+}
+
+/* Wrapper around the phone input so the dropdown positions correctly */
+.phone-cell {
+  position: relative;            /* important: anchor for .country-list absolute */
+  overflow: visible;
+  width:fit-content !important;
+}
+
+/* Make sure no ancestor clips it */
+.guest-table,
+.guest-table-container,
+.form-card,
+.guest-verification-container {
+  overflow: visible !important;
+}
+
+/* React Phone Input dropdown fixes */
+.react-tel-input { 
+  position: relative;            /* ensure the component itself can anchor */
+}
+
+.react-tel-input .country-list,
+.phone-dropdown {                 /* dropdownClass prop also targets this */
+  position: absolute !important;  /* keep it under the input, not at viewport top */
+  top: calc(100% + 4px) !important;
+  left: 0 !important;
+  z-index: 9999 !important;       /* higher than Bootstrap modal (1050) */
+  max-height: 280px;
+  overflow: auto;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+/* If the dropdown needs to open upward when near bottom, allow this helper class */
+.phone-dropdown.dropup {
+  bottom: calc(100% + 4px) !important;
+  top: auto !important;
+}
+
+
+/* ==== Arrange phone input and verify button side by side ==== */
+.verify-row {
+  display: flex;
+  flex-wrap: nowrap; /* keep them on one line */
+}
+
+/* Let phone input take more width */
+.verify-row .phone-cell {
+  flex: 1; /* input stretches nicely */
+}
+
+/* Verify button consistent height with phone input */
+.verify-row .verify-button {
+  height: 45px;
+  padding: 0 16px;
+  white-space: nowrap;
+}
