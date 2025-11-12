@@ -45,10 +45,18 @@ const GuestDetailsModal = ({ show, handleClose, guest }) => {
         <Modal.Title>Guest Details</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p><strong>Phone Number:</strong> {guest.phoneNumber}</p>
-        <p><strong>Aadhaar Status:</strong> {guest.aadhaarStatus}</p>
-        <p><strong>Face Status:</strong> {guest.faceStatus}</p>
-        <p><strong>Timestamp:</strong> {guest.timestamp}</p>
+        <p>
+          <strong>Phone Number:</strong> {guest.phoneNumber}
+        </p>
+        <p>
+          <strong>Aadhaar Status:</strong> {guest.aadhaarStatus}
+        </p>
+        <p>
+          <strong>Face Status:</strong> {guest.faceStatus}
+        </p>
+        <p>
+          <strong>Timestamp:</strong> {guest.timestamp}
+        </p>
       </Modal.Body>
     </Modal>
   );
@@ -103,7 +111,7 @@ const GuestPhoneEntry = () => {
     const phone = updatedGuests[index].phoneNumber;
 
     // Remove country code for comparison (assuming India +91)
-    const phoneWithoutCode = phone.replace(/^91/, '');
+    const phoneWithoutCode = phone.replace(/^91/, "");
 
     if (phoneWithoutCode === "9104622293") {
       updatedGuests[index].aadhaarStatus = "verified";
@@ -197,59 +205,60 @@ const GuestPhoneEntry = () => {
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>
-  {!guest.isVerified ? (
-    <div className="verify-row">
-      <div className="phone-cell">
-        <PhoneInput
-          country="in"
-          value={guest.phoneNumber}
-          onChange={(value) => handlePhoneNumberChange(index, value)}
-          inputClass="phone-input-field"
-          containerClass="phone-input-container"
-          buttonClass="phone-input-button"
-          dropdownClass="phone-dropdown"
-          placeholder="Enter phone number"
-          enableSearch
-          searchPlaceholder="Search country"
-          disabled={false}
-        />
-      </div>
-      <button
-        className="verify-button"
-        onClick={() => handleVerifyGuest(index)}
-        disabled={!isValidPhoneNumber(guest.phoneNumber)}
-      >
-        Verify Guest
-      </button>
-    </div>
-  ) : (
-    <div className="verified-phone">
-      <div className="phone-cell">
-        <PhoneInput
-          country="in"
-          value={guest.phoneNumber}
-          disabled
-          inputClass="phone-input-field"
-          containerClass="phone-input-container"
-          buttonClass="phone-input-button"
-          dropdownClass="phone-dropdown"
-        />
-      </div>
-      {guest.aadhaarStatus !== "verified" && (
-        <span
-          className="change-link"
-          onClick={(e) => {
-            e.preventDefault();
-            handleChangeNumber(index);
-          }}
-        >
-          change number
-        </span>
-      )}
-    </div>
-  )}
-</td>
-
+                    {!guest.isVerified ? (
+                      <div className="verify-row">
+                        <div className="phone-cell">
+                          <PhoneInput
+                            country="in"
+                            value={guest.phoneNumber}
+                            onChange={(value) =>
+                              handlePhoneNumberChange(index, value)
+                            }
+                            inputClass="phone-input-field"
+                            containerClass="phone-input-container"
+                            buttonClass="phone-input-button"
+                            dropdownClass="phone-dropdown"
+                            placeholder="Enter phone number"
+                            enableSearch
+                            searchPlaceholder="Search country"
+                            disabled={false}
+                          />
+                        </div>
+                        <button
+                          className="verify-button"
+                          onClick={() => handleVerifyGuest(index)}
+                          disabled={!isValidPhoneNumber(guest.phoneNumber)}
+                        >
+                          Verify Guest
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="verified-phone">
+                        <div className="phone-cell">
+                          <PhoneInput
+                            country="in"
+                            value={guest.phoneNumber}
+                            disabled
+                            inputClass="phone-input-field"
+                            containerClass="phone-input-container"
+                            buttonClass="phone-input-button"
+                            dropdownClass="phone-dropdown"
+                          />
+                        </div>
+                        {guest.aadhaarStatus !== "verified" && (
+                          <span
+                            className="change-link"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleChangeNumber(index);
+                            }}
+                          >
+                            change number
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </td>
 
                   {guest.isVerified && (
                     <>

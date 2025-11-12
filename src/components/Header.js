@@ -23,7 +23,7 @@ const Header = ({ onSidebarToggle }) => {
   };
 
   return (
-    <div className="sticky-top header-blur custom-header-bg d-flex justify-content-between align-items-center mb-3 px-2 py-2">
+    <div className="sticky-top header-blur custom-header-bg d-flex justify-content-between align-items-center mb-1 px-2 py-2">
       {/* Left: Logo and sidebar toggle */}
       <div className="d-flex align-items-center">
         <Button
